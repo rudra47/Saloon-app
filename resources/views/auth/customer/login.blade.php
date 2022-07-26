@@ -2,10 +2,76 @@
 @extends('customer.layouts.app')
 
 @push('css')
-@include('admin.layouts.partials._head')
+
 <style>
+    .navbar {
+        margin-bottom: 0px;
+    }
     .navbar-nav {
         flex-direction: inherit;
+    }
+
+    .login-block .auth-box {
+        margin: 20px auto 0 auto;
+        max-width: 450px;
+    }
+
+    .card {
+        border-radius: 5px;
+        -webkit-box-shadow: 0 1px 20px 0 rgb(69 90 100 / 8%);
+        box-shadow: 0 1px 20px 0 rgb(69 90 100 / 8%);
+        border: none;
+        margin-bottom: 30px;
+        background-color: #fff;
+    }
+
+    .login-block {
+        padding: 30px 0;
+        margin: 0 auto;
+        background: #353C4E;
+        background-size: cover;
+        min-height: 100vh;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+
+    .card-block {
+        padding: 1.25rem;
+    }
+    .m-b-20 {
+        margin-bottom: 20px;
+    }
+    .form-group {
+        margin-bottom: 1.25em;
+    }
+    .form-control {
+        font-size: 16px;
+        border-radius: 2px;
+        border: 1px solid #ccc;
+    }
+
+    .pcoded[theme-layout="vertical"][vertical-layout="wide"] .pcoded-container {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .pcoded[theme-layout="vertical"] .pcoded-container {
+        overflow: hidden;
+        position: relative;
+        margin: 0 auto;
+    }
+
+    @media (min-width: 576px){
+        .col-sm-12 {
+            -webkit-box-flex: 0;
+            -ms-flex: 0 0 100%;
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
     }
 </style>
 @endpush
@@ -56,8 +122,8 @@
                                         @enderror
                                     </div>
                                     <div class="row m-t-25 text-left">
-                                        <div class="col-12">
-                                            <div class="forgot-phone text-right f-right">
+                                        <div class="col-md-12">
+                                            <div class="forgot-phone text-right f-right" style="margin-bottom: 10px;">
                                                 <a href="#" class="text-right f-w-600"> Forgot
                                                     Password?</a>
                                             </div>
@@ -69,7 +135,7 @@
                                                     class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Sign
                                                 in</button>
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-md-12">
                                             <p>Not a memeber? <a href="{{ route('register') }}">Register</a> </p>
                                         </div>
                                     </div>
