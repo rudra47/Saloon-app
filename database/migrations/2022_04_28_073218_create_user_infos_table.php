@@ -28,7 +28,6 @@ class CreateUserInfosTable extends Migration
             $table->string('board_id', 100)->nullable();
             $table->string('additional_information', 100)->nullable();
             $table->string('status', 20);
-            $table->foreignId('order_id')->constrained('orders', 'id') ->onDelete('cascade');
             $table->timestamps();
         });
     }
