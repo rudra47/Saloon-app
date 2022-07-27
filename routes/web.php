@@ -6,11 +6,14 @@ use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Customer\MapController;
 use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Customer\SaloonController;
+use App\Http\Controllers\Customer\PagesController;
 
 use Illuminate\Support\Facades\Route;
 
 // CUSTOMER PANEl ROUTES
-Route::get('/', [MapController::class, 'index'])->name('home');
+Route::get('/', [PagesController::class, 'index'])->name('home');
+
+Route::get('/map', [MapController::class, 'index'])->name('map');
 
 Route::post('/book-saloon', [MapController::class, 'store'])->name('saloon.book')->middleware('auth');
 Route::get('/saloon-apply', [SaloonController::class, 'index'])->name('saloon.apply');

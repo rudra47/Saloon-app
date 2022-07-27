@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Saloon;
 
-class MapController extends Controller
+class PagesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,7 +29,7 @@ class MapController extends Controller
                 'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='.$from_latlong.'&destinations='.$to_latlong.'&key='.$googleApi
                 );
         //dd(json_decode($distance_data));
-        return view('customer.map', compact('saloons'));
+        return view('customer.index', compact('saloons'));
     }
 
     /**
@@ -50,7 +50,7 @@ class MapController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        //
     }
 
     /**

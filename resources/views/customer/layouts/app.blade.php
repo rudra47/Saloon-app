@@ -79,7 +79,7 @@
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 		  <div class="navbar-header">
-			<a class="navbar-brand" href="#">WebSiteName</a>
+			<a class="navbar-brand" href="{{ route('home') }}">WebSiteName</a>
 		  </div>
 		  <ul class="nav navbar-nav">
 			<li><a href="{{ route('home') }}">Home</a></li>
@@ -87,6 +87,7 @@
 				<li><a href="#">My Bookings</a></li>
 				<li><a href="{{ route('profile') }}">My Profile</a></li>
 			@endif
+			<li><a href="{{ route('map') }}">Map</a></li>
 		  </ul>
 		  <ul class="nav navbar-nav navbar-right">
 			<li><a href="{{ route('saloon.apply') }}" style="border: 1px solid rgb(20, 155, 50); border-radius: 5px; padding-top: 5px; padding-bottom: 5px; margin-top: 7px;">Apply as a Saloon</a></li>
