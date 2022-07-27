@@ -5,13 +5,16 @@ use App\Http\Controllers\Admin\Dashboard\DashboardController;
 //CUSTOMER CONTROLLERS
 use App\Http\Controllers\Customer\MapController;
 use App\Http\Controllers\Customer\CustomerController;
+use App\Http\Controllers\Customer\SaloonController;
 
 use Illuminate\Support\Facades\Route;
 
 // CUSTOMER PANEl ROUTES
 Route::get('/', [MapController::class, 'index'])->name('home');
+
 Route::post('/book-saloon', [MapController::class, 'store'])->name('saloon.book')->middleware('auth');
-Route::post('/saloon-apply', [MapController::class, 'store'])->name('saloon.apply')->middleware('auth');
+Route::get('/saloon-apply', [SaloonController::class, 'index'])->name('saloon.apply');
+Route::post('/saloon-apply/submit', [SaloonController::class, 'store'])->name('saloon.apply.submit');
 
 Route::get('/profile', [CustomerController::class, 'index'])->name('profile')->middleware('auth');
 Route::post('/profile/edit/{id}', [CustomerController::class, 'update'])->name('profile.update')->middleware('auth');

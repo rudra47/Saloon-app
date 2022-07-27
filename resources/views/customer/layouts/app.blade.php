@@ -89,6 +89,7 @@
 			@endif
 		  </ul>
 		  <ul class="nav navbar-nav navbar-right">
+			<li><a href="{{ route('saloon.apply') }}" style="border: 1px solid rgb(20, 155, 50); border-radius: 5px; padding-top: 5px; padding-bottom: 5px; margin-top: 7px;">Apply as a Saloon</a></li>
 			@if(auth()->check())
 				<li><a href="#" onclick="event.preventDefault();" style="cursor: auto;">Welcome, {{ auth()->user()->name }}</a></li>
 				<li>
