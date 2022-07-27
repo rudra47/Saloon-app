@@ -13,10 +13,7 @@ class ProductTagTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_tag', function (Blueprint $table) {
-            $table->foreignId('product_id')->nullable()->constrained('products', 'id')->onDelete('cascade');
-            $table->foreignId('tag_id')->nullable()->constrained('tags', 'id')->onDelete('cascade');
-        });
+        
     }
 
     /**
