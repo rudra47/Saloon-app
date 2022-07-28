@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Saloon;
 
 class SaloonController extends Controller
 {
@@ -14,7 +15,7 @@ class SaloonController extends Controller
      */
     public function index()
     {
-        //
+        return view('customer.saloon.apply');
     }
 
     /**
@@ -35,7 +36,26 @@ class SaloonController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name'          => 'required|string|max:100',
+            'email'         => 'required|string|max:50|unique:saloons,email',
+            'phone'         => 'required|string|max:50|unique:saloons,phone',
+            'latitude'      => 'required|string|max:20|unique:saloons,latitude',
+            'longitude'     => 'required|string|max:20|unique:saloons,longitude',
+            'address'       => 'required|string',
+        ]);
+
+        Saloon::create([
+            'name'          => $request->name,
+            'email'         => $request->email,
+            'phone'         => $request->phone,
+            'latitude'      => $request->latitude,
+            'longitude'     => $request->longitude,
+            'address'       => $request->address,
+        ]);
+
+        flash('Application Submited Successfully! You will be notified very soon. Please wait.')->success();
+        return redirect()->route('saloon.apply');
     }
 
     /**

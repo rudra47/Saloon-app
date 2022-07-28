@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('longitude', 20)->comment('User location longitude');
             $table->string('token', 100)->nullable();
             $table->rememberToken();
-            $table->unsignedTinyInteger('status')->default(1);
+            $table->unsignedTinyInteger('status')->default(1)->comment('1=> Active, 0=>Inactive');
             $table->timestamps();
         });
     }
