@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Auth;
 
-class ShipperMiddleware
+class SaloonMiddleware
 {
     /**
      * Handle an incoming request.
@@ -18,7 +18,7 @@ class ShipperMiddleware
     public function handle(Request $request, Closure $next)
     {
         if (Auth::user()) {
-            if (Auth::user()->role_type === 'shipper') {
+            if (Auth::user()->role_type === 'saloon') {
                 return $next($request);
             }
         }

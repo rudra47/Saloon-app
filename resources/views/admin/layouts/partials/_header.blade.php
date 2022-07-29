@@ -33,12 +33,12 @@
                         <ul class="show-notification profile-notification dropdown-menu"
                             data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                             <li>
-                                <a href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                       document.getElementById('logout-form').submit();">
+                                <a href="{{ route('app.logout') }}"
+                                    onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
                                     <i class="feather icon-log-out"></i> Logout
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                <form id="logout-form" action="{{ route('app.logout') }}" method="POST" style="display: none;">
                                     {{ csrf_field() }}
                                 </form>
                             </li>
