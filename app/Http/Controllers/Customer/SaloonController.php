@@ -66,7 +66,9 @@ class SaloonController extends Controller
      */
     public function show($id)
     {
-        //
+        $saloon = Saloon::find($id);
+
+        return view('customer.saloon.details', compact('saloon'));
     }
 
     /**

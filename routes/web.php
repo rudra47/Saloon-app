@@ -15,6 +15,8 @@ Route::get('/', [PagesController::class, 'index'])->name('home');
 
 Route::get('/map', [MapController::class, 'index'])->name('map');
 
+Route::get('/saloon/{id}', [SaloonController::class, 'show'])->name('saloon.view');
+
 Route::post('/book-saloon', [MapController::class, 'store'])->name('saloon.book')->middleware('auth');
 Route::get('/saloon-apply', [SaloonController::class, 'index'])->name('saloon.apply');
 Route::post('/saloon-apply/submit', [SaloonController::class, 'store'])->name('saloon.apply.submit');

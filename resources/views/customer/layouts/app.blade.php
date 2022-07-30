@@ -81,6 +81,7 @@
 		  <div class="navbar-header">
 			<a class="navbar-brand" href="{{ route('home') }}">WebSiteName</a>
 		  </div>
+
 		  <ul class="nav navbar-nav">
 			<li><a href="{{ route('home') }}">Home</a></li>
 			@if(auth()->check())
