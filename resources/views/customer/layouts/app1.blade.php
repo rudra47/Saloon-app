@@ -12,6 +12,11 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{{ asset('/') }}css/styles.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css"
+     href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        @stack('css')
     </head>
     <body>
         <!-- Navigation-->
@@ -40,7 +45,7 @@
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item text-center" href="#" onclick="event.preventDefault();" style="cursor: auto; font-weight: bold;">{{ auth()->user()->name }}</a></li>
                                     <li><hr class="dropdown-divider" /></li>
-                                    <li><a class="dropdown-item" href="#!"><i class="bi-filter-right me-1"></i> My Bookings</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('bookings') }}"><i class="bi-filter-right me-1"></i> My Bookings</a></li>
                                     <li><hr class="dropdown-divider" /></li>
                                     <li><a class="dropdown-item" href="{{ route('profile') }}"><i class="bi-person-fill me-1"></i> My Profile</a></li>
                                     <li><hr class="dropdown-divider" /></li>
@@ -76,6 +81,10 @@
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script src="{{ asset('/') }}adminity/files/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="{{ asset('/') }}adminity/files/bower_components/jquery-ui/jquery-ui.min.js"></script>
+
         <!-- Core theme JS-->
         <script src="{{ asset('/') }}js/scripts.js"></script>
         <script>
@@ -88,5 +97,59 @@
                 });
             });
         </script>
+
+<script src="{{ URL::asset('adminity/files/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<script>
+    @if(Session::has('message'))
+    toastr.options =
+    {
+        "closeButton" : true,
+        "progressBar" : true
+    }
+            toastr.success("{{ session('message') }}");
+    @endif
+
+    @if(Session::has('success'))
+    toastr.options =
+    {
+        "closeButton" : true,
+        "progressBar" : true
+    }
+            toastr.success("{{ session('success') }}");
+    @endif
+
+    @if(Session::has('error'))
+    toastr.options =
+    {
+        "closeButton" : true,
+        "progressBar" : true
+    }
+            toastr.error("{{ session('error') }}");
+    @endif
+
+    @if(Session::has('info'))
+    toastr.options =
+    {
+        "closeButton" : true,
+        "progressBar" : true
+    }
+            toastr.info("{{ session('info') }}");
+    @endif
+
+    @if(Session::has('warning'))
+    toastr.options =
+    {
+        "closeButton" : true,
+        "progressBar" : true
+    }
+            toastr.warning("{{ session('warning') }}");
+    @endif
+</script>
+
+<script>
+    $('div.alert').not('.alert-important').delay(3000).fadeOut(350);
+</script>
+
+    @stack('scripts')
     </body>
 </html>

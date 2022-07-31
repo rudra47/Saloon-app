@@ -17,7 +17,10 @@ class CreateSaloonServicesTable extends Migration
             $table->id();
             $table->string('name', 100);
             $table->foreignId('saloon_id')->constrained('saloons')->onDelete('cascade');
-            $table->unsignedTinyInteger('status')->default(1)->comment('1=> Active, 0=>Inactive');;
+            $table->double('price')->default(0.00);
+            $table->unsignedTinyInteger('discount_type')->default(1)->comment('1=> Flat, 2=>Percentage');
+            $table->integer('discount_price')->default(0);
+            $table->unsignedTinyInteger('status')->default(1)->comment('1=> Active, 0=>Inactive');
             $table->timestamps();
         });
     }

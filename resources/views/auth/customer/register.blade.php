@@ -1,5 +1,4 @@
-
-@extends('customer.layouts.app')
+@extends('customer.layouts.app1')
 
 @push('css')
 
@@ -77,7 +76,7 @@
 @endpush
 
 @section('content')
-
+<!-- Header-->
 @include('admin.layouts.partials.preloader')
 
 <div id="pcoded" class="pcoded">
@@ -93,6 +92,7 @@
 
                         <form method="POST" action="{{ route('register') }}" class="md-float-material form-material">
                             @csrf
+
                             <div class="text-center">
                                 <img src="{{ asset('/') }}adminity/files/assets/images/logo.png" alt="logo.png">
                             </div>
@@ -103,64 +103,50 @@
                                             <h3 class="text-center">Sign Up</h3>
                                         </div>
                                     </div>
+
                                     <div class="form-group form-primary">
-                                        <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" placeholder="Your Full Name" value="{{ old('name') }}" required autocomplete="off" autofocus>
-                                        <span class="form-bar"></span>
+                                        <label for="name">{{ __('Name') }}</label>
+                                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+        
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
+            
                                     <div class="form-group form-primary">
-                                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Your Email Address" value="{{ old('email') }}" required autocomplete="off">
-                                        <span class="form-bar"></span>
+                                        <label for="email">{{ __('E-Mail Address') }}</label>
+                                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+        
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
+            
                                     <div class="form-group form-primary">
-                                        <input type="text" name="latitude" class="form-control @error('latitude') is-invalid @enderror" placeholder="Your Location Latitude" value="{{ old('latitude') }}" required autocomplete="off">
-                                        <span class="form-bar"></span>
-                                        @error('latitude')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group form-primary">
-                                        <input type="text" name="longitude" class="form-control @error('longitude') is-invalid @enderror" placeholder="Your Location Longitude" value="{{ old('longitude') }}" required autocomplete="off">
-                                        <span class="form-bar"></span>
-                                        @error('longitude')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group form-primary">
-                                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" required autocomplete="off">
-                                        <span class="form-bar"></span>
+                                        <label for="password">{{ __('Password') }}</label>
+                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
                                         @error('password')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
+            
                                     <div class="form-group form-primary">
-                                        <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm Password" required autocomplete="off">
-                                        <span class="form-bar"></span>
+                                        <label for="password-confirm">{{ __('Confirm Password') }}</label>
+                                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                                     </div>
+
                                     <div class="row m-t-30">
                                         <div class="col-md-12">
-                                            <button type="submit"
-                                                    class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Sign Up</button>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <p>Already a memeber? <a href="{{ route('login') }}">Sign In</a> </p>
+                                            <button type="submit" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20" style="float: right;">{{ __('Submit') }}</button>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </form>
@@ -174,12 +160,4 @@
         </section>
     </div>
 </div>
-
 @endsection
-
-@push('scripts')
-
-@include('admin.layouts.partials._footer-script')
-
-@endpush
-

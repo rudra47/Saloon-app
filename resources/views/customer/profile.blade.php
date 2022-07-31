@@ -1,5 +1,4 @@
-
-@extends('customer.layouts.app')
+@extends('customer.layouts.app1')
 
 @push('css')
 
@@ -77,7 +76,9 @@
 @endpush
 
 @section('content')
-
+<!-- Header-->
+@include('admin.layouts.partials.preloader')
+<!-- Section-->
 @include('admin.layouts.partials.preloader')
 
 <div id="pcoded" class="pcoded">
@@ -91,7 +92,7 @@
                     <div class="col-sm-12">
                         <!-- Authentication card start -->
 
-                        <form method="POST" action="{{ route('profile.update', auth()->user()->id) }}" class="md-float-material form-material">
+                        <form method="POST" action="{{ route('profile.update') }}" class="md-float-material form-material">
                             @csrf
                             <div class="text-center">
                                 <h2 style="color: #fff">Profile Information</h2>
@@ -104,6 +105,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group form-primary">
+                                        <label for="name">Full Name</label>
                                         <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" placeholder="Your Full Name" value="{{ auth()->user()->name }}" required autocomplete="off" autofocus>
                                         <span class="form-bar"></span>
                                         @error('name')
@@ -113,6 +115,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group form-primary">
+                                        <label for="email">Email</label>
                                         <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Your Email Address" value="{{ auth()->user()->email }}" required autocomplete="off">
                                         <span class="form-bar"></span>
                                         @error('email')
@@ -122,6 +125,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group form-primary">
+                                        <label for="latitude">Latitude</label>
                                         <input type="text" name="latitude" class="form-control @error('latitude') is-invalid @enderror" placeholder="Your Location Latitude" value="{{ auth()->user()->latitude }}" required autocomplete="off">
                                         <span class="form-bar"></span>
                                         @error('latitude')
@@ -131,6 +135,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group form-primary">
+                                        <label for="longitude">Longitude</label>
                                         <input type="text" name="longitude" class="form-control @error('longitude') is-invalid @enderror" placeholder="Your Location Longitude" value="{{ auth()->user()->longitude }}" required autocomplete="off">
                                         <span class="form-bar"></span>
                                         @error('longitude')
@@ -143,7 +148,7 @@
                                     <div class="row m-t-30">
                                         <div class="col-md-12">
                                             <button type="submit"
-                                                    class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Update Info</button>
+                                                    class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20" style="float: right:">Update Info</button>
                                         </div>
                                     </div>
                                 </div>
@@ -163,6 +168,7 @@
                                         {!! implode('', $errors->all('<div style="text-align: left; color: red; font-size: 16px; margin-bottom: 20px;">:message</div>')) !!}
                                     @endif
                                     <div class="form-group form-primary">
+                                        <label for="old_password">Old Password</label>
                                         <input type="password" name="old_password" class="form-control @error('old_password') is-invalid @enderror" placeholder="Enter Old Password" required autocomplete="off">
                                         <span class="form-bar"></span>
                                         @error('old_password')
@@ -172,6 +178,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group form-primary">
+                                        <label for="password">New Password</label>
                                         <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter New Password" required autocomplete="off">
                                         <span class="form-bar"></span>
                                         @error('password')
@@ -181,13 +188,13 @@
                                         @enderror
                                     </div>
                                     <div class="form-group form-primary">
+                                        <label for="password_confirmation">Confirm New Password</label>
                                         <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm New Password" required autocomplete="off">
                                         <span class="form-bar"></span>
                                     </div>
                                     <div class="row m-t-30">
                                         <div class="col-md-12">
-                                            <button type="submit"
-                                                    class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Change Password</button>
+                                            <button type="submit" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20" style="float: right:">Change Password</button>
                                         </div>
                                     </div>
                                 </div>
@@ -203,12 +210,4 @@
         </section>
     </div>
 </div>
-
 @endsection
-
-@push('scripts')
-
-@include('admin.layouts.partials._footer-script')
-
-@endpush
-

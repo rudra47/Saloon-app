@@ -1,5 +1,4 @@
-
-@extends('customer.layouts.app')
+@extends('customer.layouts.app1')
 
 @push('css')
 
@@ -77,7 +76,7 @@
 @endpush
 
 @section('content')
-
+<!-- Header-->
 @include('admin.layouts.partials.preloader')
 
 <div id="pcoded" class="pcoded">
@@ -122,8 +121,8 @@
                                         @enderror
                                     </div>
                                     <div class="row m-t-25 text-left">
-                                        <div class="col-md-12">
-                                            <div class="forgot-phone text-right f-right" style="margin-bottom: 10px;">
+                                        <div class="col-12">
+                                            <div class="forgot-phone text-right f-right">
                                                 <a href="#" class="text-right f-w-600"> Forgot
                                                     Password?</a>
                                             </div>
@@ -132,10 +131,10 @@
                                     <div class="row m-t-30">
                                         <div class="col-md-12">
                                             <button type="submit"
-                                                    class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Sign
+                                                    class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20" style="float: right;">Sign
                                                 in</button>
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-12">
                                             <p>Not a memeber? <a href="{{ route('register') }}">Register</a> </p>
                                         </div>
                                     </div>
@@ -152,12 +151,4 @@
         </section>
     </div>
 </div>
-
 @endsection
-
-@push('scripts')
-
-@include('admin.layouts.partials._footer-script')
-
-@endpush
-

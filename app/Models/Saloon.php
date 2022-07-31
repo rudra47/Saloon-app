@@ -9,9 +9,14 @@ class Saloon extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+
     protected $fillable = ['name', 'email', 'phone', 'address', 'latitude', 'longitude', 'status'];
 
     public function tags() {
         return $this->belongsToMany(Tag::class);
+    }
+    public function services() {
+        return $this->hasMany(SaloonService::class);
     }
 }

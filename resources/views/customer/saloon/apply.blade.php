@@ -1,5 +1,4 @@
-
-@extends('customer.layouts.app')
+@extends('customer.layouts.app1')
 
 @push('css')
 
@@ -77,7 +76,9 @@
 @endpush
 
 @section('content')
-
+<!-- Header-->
+@include('admin.layouts.partials.preloader')
+<!-- Section-->
 @include('admin.layouts.partials.preloader')
 
 <div id="pcoded" class="pcoded">
@@ -91,7 +92,7 @@
                     <div class="col-sm-12">
                         <!-- Authentication card start -->
 
-                        <form method="POST" action="{{ route('saloon.apply.submit') }}" class="md-float-material form-material">
+                        <form method="POST" action="{{ route('saloon.apply.submit') }}" class="md-float-material form-material" enctype="multipart/form-data">
                             @csrf
                             <div class="text-center">
                                 <img src="{{ asset('/') }}adminity/files/assets/images/logo.png" alt="logo.png">
@@ -165,9 +166,29 @@
                                             </span>
                                         @enderror
                                     </div>
+                                    <div class="form-group form-primary">
+                                        <label for="image">Saloon Thumbnail</label>
+                                        <input type="file" name="image" id="image"class="form-control @error('image') is-invalid @enderror">
+                                        <span class="form-bar"></span>
+                                        @error('image')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group form-primary">
+                                        <label for="cover_image">Saloon Cover Photo</label>
+                                        <input type="file" name="cover_image" id="cover_image"class="form-control @error('cover_image') is-invalid @enderror">
+                                        <span class="form-bar"></span>
+                                        @error('cover_image')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
                                     <div class="row m-t-30">
                                         <div class="col-md-12">
-                                            <button type="submit" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Submit</button>
+                                            <button type="submit" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20" style="float: right;">Submit</button>
                                         </div>
                                     </div>
                                 </div>
@@ -183,12 +204,4 @@
         </section>
     </div>
 </div>
-
 @endsection
-
-@push('scripts')
-
-@include('admin.layouts.partials._footer-script')
-
-@endpush
-
