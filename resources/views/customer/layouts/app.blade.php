@@ -68,6 +68,10 @@
 			border: none !important;
 			border-radius: 0 !important;
 		}
+
+		.close-info {
+			color: #000;
+		}
 		
 	</style>
 

@@ -80,7 +80,7 @@
                                     <li><a class="dropdown-item" href="{{ route('profile') }}"><i class="bi-person-fill me-1"></i> My Profile</a></li>
                                     <li><hr class="dropdown-divider" /></li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('logout') }}"><i class="bi-box-arrow-left me-1" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"></i> Logout</a>
+                                        <a class="dropdown-item" href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bi-box-arrow-left me-1"></i> Logout</a>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                             @csrf
                                         </form>

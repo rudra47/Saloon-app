@@ -4,7 +4,7 @@
 <!-- Header-->
 @include('admin.layouts.partials.preloader')
 <!-- Section-->
-<section class="py-5">
+<section class="py-5" style="min-height: 780px;">
     <div class="container px-4 px-lg-5 mt-5">
         <h3>Available Saloons Near You</h3>
         <hr/>
