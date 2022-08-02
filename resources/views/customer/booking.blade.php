@@ -16,14 +16,14 @@
     <div class="container px-4 px-lg-5 mt-2">
         <h3>My Bookings</h3>
         <hr/>
-            <table class="table table-hovered">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>SL#</th>
                         <th>Service</th>
-                        <th>Booking Status</th>
+                        <th class="text-center">Booking Status</th>
                         <th>Booking Date</th>
-                        <th>Action</th>
+                        <th class="text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,13 +32,13 @@
                     <tr>
                         <td>{{ $loop->index+1 }}</td>
                         <td>{{ $booking->name }}</td>
-                        <td>@if($booking->status==2) <span style="color:red">Pending</span> @elseif($booking->status==1) <span style="color:green">Accepted</span> @else <span style="color:rgb(107, 5, 5)">Rejected</span> @endif</td>
-                        <td>{{ $booking->created_at }}</td>
-                        <td></td>
+                        <td class="text-center">@if($booking->status==2) <span style="color:red; border:1px solid red; font-size: 14px; padding: 5px; border-radius: 5px;">Pending</span> @elseif($booking->status==1) <span style="color:green; border:1px solid green; font-size: 14px; padding: 5px; border-radius: 5px;">Accepted</span> @else <span style="color:rgb(107, 5, 5); border:1px solid rgb(107, 5, 5); font-size: 14px; padding: 5px; border-radius: 5px;">Rejected</span> @endif</td>
+                        <td>{{ date('d-m-Y g:ia', strtotime($booking->created_at)) }}</td>
+                        <td class="text-center">@if($booking->status==2)<a class="btn btn-danger"href="{{ route('bookings.cancel', $booking->id) }}"><i class="bi-x-lg me-1"> Cancel</a>@else - @endif</td>
                     </tr>
                 @endforeach
                 @else
-                    <tr class="text-center"><td colspan="5">No services found!</td></tr>
+                    <tr class="text-center"><td colspan="5">No bookings found!</td></tr>
                 @endif
                 </tbody>
             </table>

@@ -148,6 +148,10 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $booking = Booking::find($id);
+        $booking->delete();
+        flash('Booking Canceled Successfully')->success();
+
+        return back();
     }
 }

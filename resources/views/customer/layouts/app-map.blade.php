@@ -185,14 +185,16 @@
             }
         
             function addMarker(saloon){
+                var id = saloon.id;
                 var name = saloon.name;
                 var email = saloon.email;
                 var phone = saloon.phone;
                 var address = saloon.address;
                 var latitude = saloon.latitude;
                 var longitude = saloon.longitude;
+                //alert('ttt: '+id+'');
         
-                var confirm = "Are you sure?";
+                //var confirm = "Are you sure?";
         
                 var html = '<div style="margin-bottom: 10px;"><h3>' + name + '</h3>' + email +'<br/>'+phone+'<br/>'+address+'</div>';
                 // html += '<div><table class="table table-responsive table-bordered"><thead><tr><th>Schedule</th><th>Book</th></tr></thead>';
@@ -201,18 +203,18 @@
                 // html += '</tr>';
                 // html += '</table></div>';
         
-                html += '<div><form method="post" action="{{ route('saloon.book') }}">';
-                html += 	'@csrf';
-                html += 	'<span style="font-size: 16px; font-weight: bold;"><b>Select Service: </b>';
-                html += 		'<select name="service" style="margin-top: 5px;" required>';
-                html += 			'<option value="">---Select---</option>';
-                html += 			'<option value="0">Hair cut</option>';
-                html += 			'<option value="0">Head massage</option>';
-                html += 			'<option value="0">Hair color</option>';
-                html +=			'</select>';
-                html +=		'</span><br/>';
-                html += 	'<button type="submit" class="btn btn-sm btn-primary" style="margin-top: 5px;" onclick="return confirm('+confirm+');">Book Now</button>';
-                html += '</form></div>';
+                // html += '<div><form method="post" action="{{ route('saloon.view', '+id+') }}">';
+                // html += 	'@csrf';
+                // html += 	'<span style="font-size: 16px; font-weight: bold;"><b>Select Service: </b>';
+                // html += 		'<select name="service" style="margin-top: 5px;" required>';
+                // html += 			'<option value="">---Select---</option>';
+                // html += 			'<option value="0">Hair cut</option>';
+                // html += 			'<option value="0">Head massage</option>';
+                // html += 			'<option value="0">Hair color</option>';
+                // html +=			'</select>';
+                // html +=		'</span><br/>';
+                html += 	'<div><a href="/saloon/'+id+'" class="btn btn-sm btn-primary" style="margin: 5px;">View Details</a></div>';
+                // html += '</form></div>';
         
                 // html += '<div class="modal" id="exampleModal" tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">';
                 // html += 	'<div class="modal-dialog" role="document">';
@@ -299,7 +301,6 @@
                     //Pushing the markers into an array so that it's easier to manage them
                     //markersArray_free.push(marker);
                     google.maps.event.addListener( marker, 'click', function () {
-                        //closeInfos_free();
                         var info = new google.maps.InfoWindow({content: this.content});
                         //On click the map will load the info window
                         info.open(map,this);
@@ -315,58 +316,7 @@
                     initMapView = true;
                 }
             }
-        
-        
-            //Manages the info windows
-            function closeInfos_free(){
-                if(infos_free.length > 0){
-                    infos_free[0].set("marker",null);
-                    infos_free[0].close();
-                    infos_free.length = 0;
-                }
-            }
-            function closeInfos_anj(){
-                if(infos_anj.length > 0){
-                    infos_anj[0].set("marker",null);
-                    infos_anj[0].close();
-                    infos_anj.length = 0;
-                }
-            }
-            function closeInfos_car(){
-                if(infos_car.length > 0){
-                    infos_car[0].set("marker",null);
-                    infos_car[0].close();
-                    infos_car.length = 0;
-                }
-            }
-            function closeInfos_route(){
-                if(infos_route.length > 0){
-                    infos_route[0].set("marker",null);
-                    infos_route[0].close();
-                    infos_route.length = 0;
-                }
-            }
-        
-            // clearing markers
-            function clearmarkers_free_leather(){
-        //        markersArray_free_prev = markersArray_free;
-                for (var i = 0; i < markersArray_free.length; i++ ) {
-                    markersArray_free[i].setMap(null);
-                }
-                markersArray_free.length = 0;
-            }
-            function clearmarkers_anj(){
-                for (var i = 0; i < markersArray_anj.length; i++ ) {
-                    markersArray_anj[i].setMap(null);
-                }
-                markersArray_anj.length = 0;
-            }
-            function clearmarkers_route(){
-                for (var i = 0; i < markersArray_route.length; i++ ) {
-                    markersArray_route[i].setMap(null);
-                }
-                markersArray_route.length = 0;
-            }
+
         
             // update from MAP
             function updateMarker(obj) {
@@ -380,11 +330,7 @@
                     cache: false,
                     success: function(result){
                         if(result==1){
-                            // clearing and refrashing markers
-                            clearmarkers_free_leather();
-                            //clearmarkers_anj();
-                            addMarker_free_leather();
-                            //addMarker_anjuman();
+                            
                             return false;
                         } else{
                             alertify.error("FAILED!");
@@ -394,98 +340,6 @@
                 });
             }
         
-            function syncCarPosition(){
-        
-                $.get('index.php?page=map_controller&action=3', function(result){
-                    var stringArray = [];
-                    stringArray = result.split("****");
-                    var x;
-                    var markersArray_car_new = [];
-        
-                    for (x = 0; x < stringArray.length; x = x + 1) {
-                        var posData = [];
-                        var marker;
-                        posData = stringArray[x].split("&&&");
-        
-                        var sOldPos = markersArray_car[x].position.toString().replace('(','').replace(')','').replace(' ','');
-                        var temppos = new google.maps.LatLng(posData[1], posData[2]);
-                        var sNewPos = temppos.toString().replace('(','').replace(')','').replace(' ','');
-        
-                        if (sOldPos != sNewPos) {
-        
-                            //alert(sOldPos+"\n"+sNewPos)
-                            //alert(x + " changed");
-        
-                            markersArray_car[x].setMap(null);
-                            //Load the lat, long data
-                            var pos = new google.maps.LatLng(posData[1], posData[2]);
-                            //Create a new marker and info window
-                            var markerIcon = 'assets/img/' + posData[3] + '.png';
-        
-                            marker = new google.maps.Marker({
-                                map: map,
-                                position: pos,
-                                icon: markerIcon,
-                                content: posData[0]
-                            });
-                            google.maps.event.addListener(marker, 'click', function () {
-                                closeInfos_car();
-                                var info = new google.maps.InfoWindow({content: this.content});
-                                //On click the map will load the info window
-                                info.open(map, this);
-                                infos_car[0] = info;
-                            });
-        
-                            markersArray_car[x] = marker;
-                        } else{
-                            //alert(x + " no change");
-                        }
-                    }
-                });
-        
-                /*for (var i = 0; i < markersArray_car.length; i++ ) {
-                 //alert(markersArray_car[i].position);
-                 var oldpost = markersArray_car[i].position.toString().replace('(','').replace(')','').replace(' ','').split(',');
-                 //alert(oldpost[0]);
-                 var pos = new google.maps.LatLng(parseFloat(oldpost[0])+0.0005, parseFloat(oldpost[1])+0.0005)
-                 //alert(pos + oldpost);
-                 //markersArray_car[i].position = pos;
-                 if (markersArray_car[i] != null) {
-                 markersArray_car[i].setMap(null);
-                 }
-                 markersArray_car[i] = new google.maps.Marker({
-                 position: pos,
-                 map: map,
-                 title: "jgjg"
-                 });
-                 }*/
-            }
-        
-            function updateRoutSpot(obj) {
-        
-                var frm = $(obj).closest("form");
-        
-                $.ajax({
-                    type: "POST",
-                    url: "class/map.manager.php",
-                    data: frm.serialize(),
-                    cache: false,
-                    success: function(result){
-        
-                        if(result==1){
-        
-                            // clearing and refrashing markers
-                            clearmarkers_route();
-                            addMarker_route_spot();
-        
-                            return true;
-                        } else{
-                            alertify.error("FAILED!");
-                            return false;
-                        }
-                    }
-                });
-            }
             function filter() {
             
                 url = 'index.php?page=map';
@@ -522,36 +376,6 @@
                 
                 location = url;	
             }
-        
-            function getRoute(zone_profile_id) {
-                $.ajax({
-                    url: 'index.php?page=leather_controller&zone_profile_id=' +  zone_profile_id,
-                    dataType: 'json',			
-                    success: function(json) {
-                        var html = '<option value="">রুট সিলেক্ট করুন</option>';
-                        for (i = 0; i < json.length; i++) {
-                            html += '<option value="' + json[i]['profile_id'] + '"';
-                            html += '>' + json[i]['name'] + '</option>';
-                        }
-                        $('select[name=\'route_profile_id\']').html(html);
-                    }
-                });
-            }
-            
-            function getArea(route_profile_id) {
-                $.ajax({
-                    url: 'index.php?page=leather_controller&area_route_profile_id=' +  route_profile_id,
-                    dataType: 'json',			
-                    success: function(json) {
-                        var html = '<option value="">স্পট/এলাকা সিলেক্ট করুন</option>';
-                        for (i = 0; i < json.length; i++) {
-                            html += '<option value="' + json[i]['area_id'] + '"';
-                            html += '>' + json[i]['area_name'] + '</option>';
-                        }
-                        $('select[name=\'area_id\']').html(html);
-                    }
-                });
-            }
             
         </script>
         <div class="jumbotron">
@@ -561,14 +385,9 @@
             $(document).ready(function(){
                 initMap();
                 setInterval(function mapload(){
-                    //clearmarkers_free_leather();
-                    //addMarker_free_leather();
-                    //clearmarkers_route();
-                    //addMarker_route_spot();
                 },300000);  // 5 min
         
                 setInterval(function mapload(){
-                    //syncCarPosition();
                 },10000);  // 10 sec
             });
         </script>
