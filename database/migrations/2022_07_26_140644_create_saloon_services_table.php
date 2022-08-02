@@ -17,6 +17,7 @@ class CreateSaloonServicesTable extends Migration
             $table->id();
             $table->string('name', 100);
             $table->foreignId('saloon_id')->constrained('saloons')->onDelete('cascade');
+            $table->float('C');
             $table->unsignedTinyInteger('status')->default(1)->comment('1=> Active, 0=>Inactive');;
             $table->timestamps();
         });
