@@ -21,6 +21,8 @@ class CreateSaloonsTable extends Migration
             $table->text('address')->nullable();
             $table->string('latitude', 20)->unique();
             $table->string('longitude', 20)->unique();
+            $table->text('image')->nullable();
+            $table->text('cover_image')->nullable();
             $table->unsignedTinyInteger('status')->default(1)->comment('2=>Pending, 1=> Active, 0=>Inactive');
             $table->timestamps();
         });

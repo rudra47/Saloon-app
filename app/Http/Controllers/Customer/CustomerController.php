@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\Models\Booking;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
@@ -19,6 +21,23 @@ class CustomerController extends Controller
     public function index()
     {
         return view('customer.profile');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function bookings()
+    {
+        //$bookings = Booking::with(['users', 'saloon_services'])->where('user_id', auth()->user()->id)->get();
+        $bookings = DB::table('bookings')
+            ->leftJoin('saloon_services', 'bookings.saloon_service_id', '=', 'saloon_services.id')
+            ->select('bookings.*', 'saloon_services.name')
+            ->where('bookings.user_id', auth()->user()->id)
+            ->get();
+        //dd($bookings);
+        return view('customer.booking', compact('bookings'));
     }
 
     /**
@@ -71,13 +90,13 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $user = User::find($id);
+        $user = User::find(auth()->user()->id);
 
         $this->validate($request, [
             'name'          => 'required|string|max:100',
-            'email'         => 'required|string|max:50|unique:users,email,'.$id,
+            'email'         => 'required|string|max:50|unique:users,email,'.auth()->user()->id,
             'latitude'      => 'required|string|max:20',
             'longitude'     => 'required|string|max:20'
         ]);

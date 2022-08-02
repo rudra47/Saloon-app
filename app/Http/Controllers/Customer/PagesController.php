@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Saloon;
+use Illuminate\Support\Collection;
 
 class PagesController extends Controller
 {
@@ -15,20 +16,31 @@ class PagesController extends Controller
      */
     public function index()
     {
-        $saloons = Saloon::where('status', 1)->get();
+        $saloonsAll = Saloon::where('status', 1)->get();
         //dd($saloons->toArray());
-        $coords = array_map(function($data) { return  $data['latitude'].",".$data['longitude']; }, $saloons->toArray() );
-        $from_latlong = implode("|", $coords);
+        //$coords = array_map(function($data) { return  $data['latitude'].",".$data['longitude']; }, $saloons->toArray() );
+        //$from_latlong = implode("|", $coords);
         if(auth()->check()){
             $to_latlong = "".auth()->user()->latitude.",".auth()->user()->longitude;
         }else{
-            $to_latlong = "23.7283894,90.4206081";
+            $to_latlong = "23.7428818,90.4162051";
         }
-        $googleApi = "AIzaSyDuSN0u2fpgle4eYZ1kxPHmTA8maKJynYE&sensor=false";
-        $distance_data = file_get_contents(
-                'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='.$from_latlong.'&destinations='.$to_latlong.'&key='.$googleApi
-                );
-        //dd(json_decode($distance_data));
+
+        $saloons = new Collection;
+
+        foreach ($saloonsAll as $saloon){
+            $from_latlong = $saloon->latitude.",".$saloon->longitude;
+            $googleApi = "AIzaSyBa0v-1H3GAkYu21zPyN_eUuedhxoTRZdw";
+            $distance_data = file_get_contents(
+                    'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='.$from_latlong.'&destinations='.$to_latlong.'&key='.$googleApi
+                    );
+            $distance = (json_decode($distance_data, true)['rows'][0]['elements'][0]['distance']['value']);
+
+            if($distance <= 1000){
+                $saloons->add($saloon);
+            }
+        }
+
         return view('customer.index', compact('saloons'));
     }
 
