@@ -11,7 +11,7 @@ class Saloon extends Model
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['name', 'email', 'phone', 'address', 'latitude', 'longitude', 'status'];
+    protected $fillable = ['user_id', 'name', 'email', 'phone', 'address', 'latitude', 'longitude', 'status'];
 
     public function tags() {
         return $this->belongsToMany(Tag::class);

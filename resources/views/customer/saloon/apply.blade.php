@@ -157,6 +157,20 @@
                                         @enderror
                                     </div>
                                     <div class="form-group form-primary">
+                                        <label for="password">Saloon Password</label>
+                                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter Password" required autocomplete="new-password">
+                                        <span class="form-bar"></span>
+                                        @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group form-primary">
+                                        <label for="password_confirmation">Confirm Password</label>
+                                        <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm Password" required autocomplete="new-password">
+                                    </div>
+                                    <div class="form-group form-primary">
                                         <label for="address">Saloon Address</label>
                                         <textarea name="address" id="" class="form-control @error('address') is-invalid @enderror" placeholder="Enter Phone Full Address" cols="30" rows="5" required autocomplete="off"></textarea>
                                         <span class="form-bar"></span>

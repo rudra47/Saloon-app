@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Saloon;
 use App\Models\Booking;
+use App\Models\User;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Hash;
 
 class SaloonController extends Controller
 {
@@ -39,18 +42,30 @@ class SaloonController extends Controller
     {
         $this->validate($request, [
             'name'          => 'required|string|max:100',
-            'email'         => 'required|string|max:50|unique:saloons,email',
+            'email'         => 'required|string|max:50|unique:saloons,email|unique:users,email',
             'phone'         => 'required|string|max:50|unique:saloons,phone',
             'latitude'      => 'required|string|max:20|unique:saloons,latitude',
             'longitude'     => 'required|string|max:20|unique:saloons,longitude',
             'address'       => 'required|string',
             'image'         => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'cover_image'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'password'      => ['nullable', 'confirmed', Password::min(8)],
         ]);
+
+        $user = User::create([
+            'name'          => $request->name,
+            'email'         => $request->email,
+            'role_type'     => "saloon",
+            'latitude'      => $request->latitude,
+            'longitude'     => $request->longitude,
+            'password'       => Hash::make($request->password)
+        ]);
+        $user_id = $user->id;
 
         $saloon = Saloon::create([
             'name'          => $request->name,
             'email'         => $request->email,
+            'user_id'       => $user_id,
             'phone'         => $request->phone,
             'latitude'      => $request->latitude,
             'longitude'     => $request->longitude,
@@ -111,12 +126,14 @@ class SaloonController extends Controller
     public function book(Request $request)
     {
         $this->validate($request, [
-            'service'  => 'required|int',
+            'service'    => 'required|int',
+            'saloon_id'  => 'required|int',
         ]);
 
         Booking::create([
             'user_id'               => auth()->user()->id,
-            'saloon_service_id'    => $request->service,
+            'saloon_id'             => $request->saloon_id,
+            'saloon_service_id'     => $request->service,
         ]);
 
         flash('Booking Registered Successfully! Follow the satus of booking.')->success();

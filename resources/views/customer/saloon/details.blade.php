@@ -66,6 +66,7 @@
                                     <form action="{{ route('saloon.book') }}" method="post">
                                         @csrf
                                         <input type="hidden" name="service" value="{{ $service->id }}">
+                                        <input type="hidden" name="saloon_id" value="{{ $saloon->id }}">
                                         <button class="btn btn-outline-dark mt-auto" type="submit">Book Now</button>
                                     </form>
                                 </div>
