@@ -6,6 +6,8 @@ use App\Http\Controllers\Customer\MapController;
 use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Customer\SaloonController;
 use App\Http\Controllers\Customer\PagesController;
+use App\Http\Controllers\Saloon\ServiceController;
+use App\Http\Controllers\Saloon\BookingController;
 //APP
 Use App\Http\Controllers\AppAuthController;
 use Illuminate\Support\Facades\Route;
@@ -38,11 +40,22 @@ Route::prefix('app')->as('app.')->group(function () {
     Route::post('/logout', [AppAuthController::class, 'logout'])->name('logout');
     // DASHBOARD
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-});
 
-Route::middleware('admin')->group(function () {
-    Route::prefix('admin')->as('admin.')->group(function () {
-        Route::get('/saloons', [SaloonController::class, 'saloon'])->name('saloons');
-        Route::get('/customers', [CustomerController::class, 'customer'])->name('customers');
+    Route::middleware('admin')->group(function () {
+        Route::prefix('admin')->as('admin.')->group(function () {
+            Route::get('/saloons', [SaloonController::class, 'saloon'])->name('saloons');
+            Route::get('/customers', [CustomerController::class, 'customer'])->name('customers');
+        });
+    });
+    Route::middleware('saloon')->group(function () {
+        Route::prefix('saloon')->as('saloon.')->group(function () {
+            Route::resource('/service', ServiceController::class);
+            Route::prefix('bookings')->as('bookings.')->group(function (){
+                Route::get('/', [BookingController::class, 'index'])->name('index');
+                Route::get('/confirmation/{booking_id}', [BookingController::class, 'confirmation'])->name('confirmation');
+                Route::post('/confirmationStore/{booking_id}', [BookingController::class, 'confirmationStore'])->name('confirmationStore');
+            });
+        });
     });
 });
+

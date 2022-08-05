@@ -15,6 +15,7 @@ class CreateSaloonsTable extends Migration
     {
         Schema::create('saloons', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id')->constrained('users')->onDelete('cascade');
             $table->string('name', 100);
             $table->string('email', 100)->unique()->nullable();
             $table->string('phone', 50)->unique()->nullable();
@@ -23,7 +24,7 @@ class CreateSaloonsTable extends Migration
             $table->string('longitude', 20)->unique();
             $table->text('image')->nullable();
             $table->text('cover_image')->nullable();
-            $table->unsignedTinyInteger('status')->default(1)->comment('2=>Pending, 1=> Active, 0=>Inactive');
+            $table->tinyInteger('status')->default(1)->comment('2=>Pending, 1=> Active, 0=>Inactive');
             $table->timestamps();
         });
     }

@@ -16,7 +16,10 @@ class CreateBookingsTable extends Migration
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('saloon_id')->constrained('saloons')->onDelete('cascade');
             $table->foreignId('saloon_service_id')->constrained('saloon_services')->onDelete('cascade');
+            $table->float('price');
+            $table->dateTime('booking_confirm_time')->nullable();
             $table->unsignedTinyInteger('status')->default(2)->comment('2=>Pending, 1=> Active, 0=>Inactive');
             $table->timestamps();
         });

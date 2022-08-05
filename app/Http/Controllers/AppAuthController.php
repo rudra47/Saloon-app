@@ -18,13 +18,9 @@ class AppAuthController
 //            'email'   => 'required|email',
 //            'password' => 'required|min:6'
 //        ]);
-//        dd(3);
-//        dd(Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember')));
         if (Auth::guard()->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
             return redirect()->intended('/app/dashboard');
         }
-//        $this->guard()->attempt(
-//            $this->credentials($request), $request->boolean('remember')
         return redirect()->route('app.login');
     }
 

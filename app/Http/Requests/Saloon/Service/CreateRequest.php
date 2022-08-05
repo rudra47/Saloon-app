@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Inventory\Shipper;
+namespace App\Http\Requests\Saloon\Service;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,8 +25,8 @@ class CreateRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'email' => ['required', 'unique:users'],
-            'password' => ['required','confirmed','min:6']
+            'price' => ['required'],
+            'status' => ['required']
         ];
     }
 }
