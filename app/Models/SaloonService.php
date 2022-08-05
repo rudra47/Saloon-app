@@ -11,5 +11,5 @@ class SaloonService extends Model
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['name', 'saloon_id', 'price', 'discount_type', 'discount_t', 'status'];
+    protected $fillable = ['name', 'saloon_id', 'price', 'discount_type', 'discount_price', 'status'];
 }

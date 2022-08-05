@@ -7,6 +7,7 @@ use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Customer\SaloonController;
 use App\Http\Controllers\Customer\PagesController;
 use App\Http\Controllers\Saloon\ServiceController;
+use App\Http\Controllers\Saloon\BookingController;
 //APP
 Use App\Http\Controllers\AppAuthController;
 use Illuminate\Support\Facades\Route;
@@ -48,6 +49,11 @@ Route::prefix('app')->as('app.')->group(function () {
     Route::middleware('saloon')->group(function () {
         Route::prefix('saloon')->as('saloon.')->group(function () {
             Route::resource('/service', ServiceController::class);
+            Route::prefix('bookings')->as('bookings.')->group(function (){
+                Route::get('/', [BookingController::class, 'index'])->name('index');
+                Route::get('/confirmation/{booking_id}', [BookingController::class, 'confirmation'])->name('confirmation');
+                Route::post('/confirmationStore/{booking_id}', [BookingController::class, 'confirmationStore'])->name('confirmationStore');
+            });
         });
     });
 });

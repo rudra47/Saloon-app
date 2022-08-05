@@ -3,46 +3,63 @@
 namespace App\Http\Controllers\Saloon;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Saloon\Service\CreateRequest;
+use App\Models\SaloonService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ServiceController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function index()
     {
-        return view('');
+        $services = SaloonService::where('saloon_id', auth()->user()->id)->get();
+        return view('saloon.service.index', compact('services'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function create()
     {
-        //
+        return view('saloon.service.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreateRequest $request
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        //
+        SaloonService::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'saloon_id' => auth()->user()->id,
+            'discount_type' => $request->discount_type,
+            'discount_price' => $request->discount_price,
+            'status' => $request->status,
+        ]);
+        flash('Service Added Successfully')->success();
+        return redirect()->route('app.saloon.service.index');
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -53,19 +70,20 @@ class ServiceController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function edit($id)
     {
-        //
+        $service = SaloonService::find($id);
+        return view('saloon.service.edit', compact('service'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -76,10 +94,12 @@ class ServiceController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        SaloonService::destroy($id);
+        flash('Service Deleted Successfully')->success();
+        return redirect()->route('app.saloon.service.index');
     }
 }

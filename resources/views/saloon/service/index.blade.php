@@ -3,7 +3,7 @@
     <div class="page-title-box">
         <div class="row align-items-center">
             <div class="col-sm-6">
-                <h4 class="page-title">Category List</h4>
+                <h4 class="page-title">Service List</h4>
             </div>
         </div>
         @include('admin.includes.validation_error')
@@ -13,9 +13,8 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    @can('create category')
-                        <a href="{{ route('admin.categories.create') }}" class="btn btn-primary btn-sm float-right"><i class="fa fa-plus"></i> Add New Category</a>
-                    @endcan
+                    <a href="{{ route('app.saloon.service.create') }}" class="btn btn-primary btn-sm float-right"><i class="fa fa-plus"></i> Add New Service</a>
+
                     <br>
                     <br>
                     <div class="dt-responsive table-responsive">
@@ -24,40 +23,50 @@
                             <tr>
                                 <th width="10%">#SL</th>
                                 <th>Name</th>
-                                @if(auth()->user()->can('update category') || auth()->user()->can('delete category'))
+                                <th>Price</th>
+                                <th>Discount</th>
+                                <th>Status</th>
                                 <th width="10%" class="text-center">Action</th>
-                                @endif
                             </tr>
                             </thead>
 
                             <tbody>
-                            @if($categories)
-                                @foreach($categories as $key => $category)
+                            @if($services)
+                                @foreach($services as $key => $service)
                                     <tr>
                                         <td>{{ $key+1 }}</td>
-                                        <td>{{ $category->name }}</td>
+                                        <td>{{ $service->name }}</td>
+                                        <td>{{ $service->price }}</td>
+                                        <td>
+                                            @if($service->discount_type == 'Percentage')
+                                                {{$service->discount_price}}%
+                                            @else
+                                                {{$service->discount_price}}tk
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($service->status == 1)
+                                                <label class="label label-success">Active</label>
+                                            @else
+                                                <label class="label label-danger">Inactive</label>
+                                            @endif
+                                        </td>
                                         <td class="text-center">
                                             <a href="#" onclick="return false;" class="dropdown-toggle dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </a>
-                                            @if(auth()->user()->can('update category') || auth()->user()->can('delete category'))
                                             <div class="dropdown-menu">
-                                                @can('update category')
-                                                <a class="dropdown-item btn btn-sm btn-info" href="{{route('admin.categories.edit', $category->id)}}"><i class="fa fa-edit"></i> Edit</a>
-                                                @endcan
+                                                <a class="dropdown-item btn btn-sm btn-info" href="{{route('app.saloon.service.edit', $service->id)}}"><i class="fa fa-edit"></i> Edit</a>
 
-                                                @can('delete category')
-                                                <form action="{{ route('admin.categories.destroy', $category->id) }}" id="delete-form-{{ $category->id }}" method="post">
+                                                <form action="{{ route('app.saloon.service.destroy', $service->id) }}" id="delete-form-{{ $service->id }}" method="post">
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="dropdown-item btn btn-sm btn-danger" onclick="return makeDeleteRequest(event, {{ $category->id }})" type="submit" title="Delete">
+                                                    <button class="dropdown-item btn btn-sm btn-danger" onclick="return makeDeleteRequest(event, {{ $service->id }})" type="submit" title="Delete">
                                                         <i class="fas fa-trash"></i>
                                                         Delete
                                                     </button>
                                                 </form>
-                                                @endcan
                                             </div>
-                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
