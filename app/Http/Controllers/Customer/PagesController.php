@@ -34,18 +34,50 @@ class PagesController extends Controller
             $distance_data = file_get_contents(
                     'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='.$from_latlong.'&destinations='.$to_latlong.'&key='.$googleApi
                     );
-            if(json_decode($distance_data, true)['rows'][0]['elements'][0]['distance']['value']){
-                $distance = (json_decode($distance_data, true)['rows'][0]['elements'][0]['distance']['value']);
-            }else{
-                $distance = 10000;
-            }
+            if(json_decode($distance_data, true)['rows'][0]['elements'][0]['distance']){
+                if(json_decode($distance_data, true)['rows'][0]['elements'][0]['distance']['value']){
+                    $distance = (json_decode($distance_data, true)['rows'][0]['elements'][0]['distance']['value']);
+                }else{
+                    $distance = 10000;
+                }
 
-            if($distance <= 1000){
-                $saloons->add($saloon);
+                if($distance <= 5000){
+                    $saloons->add($saloon);
+                }
             }
         }
 
         return view('customer.index', compact('saloons'));
+    }
+
+    public function getSaloons($latitude,$longitude)
+    {
+        $saloonsAll = Saloon::where('status', 1)->get();
+        $to_latlong = $latitude.",".$longitude;
+
+        $saloons = new Collection;
+
+        foreach ($saloonsAll as $saloon){
+            $from_latlong = $saloon->latitude.",".$saloon->longitude;
+            $googleApi = "AIzaSyBa0v-1H3GAkYu21zPyN_eUuedhxoTRZdw";
+            $distance_data = file_get_contents(
+                    'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='.$from_latlong.'&destinations='.$to_latlong.'&key='.$googleApi
+                    );
+
+            if(json_decode($distance_data, true)['rows'][0]['elements'][0]['distance']){
+                if(json_decode($distance_data, true)['rows'][0]['elements'][0]['distance']['value']){
+                    $distance = (json_decode($distance_data, true)['rows'][0]['elements'][0]['distance']['value']);
+                }else{
+                    $distance = 10000;
+                }
+
+                if($distance <= 5000){
+                    $saloons->add($saloon);
+                }
+            }
+        }
+
+        return response()->json($saloons);
     }
 
     /**

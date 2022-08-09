@@ -109,6 +109,16 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="{{ asset('/') }}js/scripts.js"></script>
+        <script>
+            $(document).ready(function() {
+                $(function() {
+                    $('[data-toggle="tooltip"]').tooltip()
+                })
+                $('.theme-loader').fadeOut('slow', function() {
+                    $(this).remove();
+                });
+            });
+        </script>
 
         <!---------------- Java Scripts for Map  ----------------->
         <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyCioD60UKGbPyLAFK8MoAH9UqySjVb50tw&v=3&language=en"></script>-->
@@ -385,7 +395,7 @@
             $(document).ready(function(){
                 initMap();
                 setInterval(function mapload(){
-                },300000);  // 5 min
+                },3000);  // 5 min
         
                 setInterval(function mapload(){
                 },10000);  // 10 sec

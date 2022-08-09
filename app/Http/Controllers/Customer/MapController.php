@@ -34,10 +34,16 @@ class MapController extends Controller
             $distance_data = file_get_contents(
                     'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='.$from_latlong.'&destinations='.$to_latlong.'&key='.$googleApi
                     );
-            $distance = (json_decode($distance_data, true)['rows'][0]['elements'][0]['distance']['value']);
+            if(json_decode($distance_data, true)['rows'][0]['elements'][0]['distance']){
+                if(json_decode($distance_data, true)['rows'][0]['elements'][0]['distance']['value']){
+                    $distance = (json_decode($distance_data, true)['rows'][0]['elements'][0]['distance']['value']);
+                }else{
+                    $distance = 10000;
+                }
 
-            if($distance <= 5000){
-                $saloons->add($saloon);
+                if($distance <= 5000){
+                    $saloons->add($saloon);
+                }
             }
         }
 
