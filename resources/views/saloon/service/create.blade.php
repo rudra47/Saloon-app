@@ -15,6 +15,7 @@
                 <div class="card-body m-t-10">
                     <form action="{{ route('app.saloon.service.store') }}" method="post">
                         @csrf
+                        <input type="hidden" name="saloon_id" value="{{$saloon_id}}">
                         <div class="col-lg-12">
                             <div class="form-group row">
                                 <label for="name" class="col-lg-2 col-sm-12 col-form-label">Name</label>
