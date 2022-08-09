@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Saloon;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Saloon\Service\CreateRequest;
+use App\Models\Saloon;
 use App\Models\SaloonService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -21,7 +22,8 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services = SaloonService::where('saloon_id', auth()->user()->id)->get();
+        $saloon = Saloon::where('user_id', auth()->user()->id)->first();
+        $services = SaloonService::where('saloon_id', $saloon->id)->get();
         return view('saloon.service.index', compact('services'));
     }
 
@@ -32,7 +34,8 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        return view('saloon.service.create');
+        $saloon_id = Saloon::where('user_id', auth()->user()->id)->first()->id;
+        return view('saloon.service.create', compact('saloon_id'));
     }
 
     /**
@@ -46,7 +49,8 @@ class ServiceController extends Controller
         SaloonService::create([
             'name' => $request->name,
             'price' => $request->price,
-            'saloon_id' => auth()->user()->id,
+            'saloon_user_id' => auth()->user()->id,
+            'saloon_id' => $request->saloon_id,
             'discount_type' => $request->discount_type,
             'discount_price' => $request->discount_price,
             'status' => $request->status,

@@ -10,13 +10,13 @@
             </li>
             @if(auth()->user()->role_type == 'admin')
             <li class="{{ Request::is('dashboard') ? 'active pcoded-trigger' : '' }} ">
-                <a href="{{ route('app.dashboard') }}">
+                <a href="{{ route('app.admin.saloons') }}">
                     <span class="pcoded-micon"><i class="feather icon-home"></i></span>
                     <span class="pcoded-mtext">Saloons</span>
                 </a>
             </li>
             <li class="{{ Request::is('dashboard') ? 'active pcoded-trigger' : '' }} ">
-                <a href="{{ route('app.dashboard') }}">
+                <a href="{{ route('app.admin.customers') }}">
                     <span class="pcoded-micon"><i class="feather icon-home"></i></span>
                     <span class="pcoded-mtext">Customer</span>
                 </a>

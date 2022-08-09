@@ -75,7 +75,7 @@ class SaloonController extends Controller
         $image = $request->file('image');
         if ($image) {
             $imageName   = 'saloon_'.date("Ymdhi").'.'.$image->getClientOriginalExtension();
-            
+
             if (file_exists('images/saloons/'.$imageName)) {
                 unlink('images/saloons/'.$imageName);
             }
@@ -95,7 +95,7 @@ class SaloonController extends Controller
         $cover_image = $request->file('cover_image');
         if ($cover_image) {
             $cover_imageName   = 'saloon_cover_'.date("Ymdhi").'.'.$cover_image->getClientOriginalExtension();
-            
+
             if (file_exists('images/saloons/'.$cover_imageName)) {
                 unlink('images/saloons/'.$cover_imageName);
             }
@@ -134,6 +134,7 @@ class SaloonController extends Controller
             'user_id'               => auth()->user()->id,
             'saloon_id'             => $request->saloon_id,
             'saloon_service_id'     => $request->service,
+            'price'                 => $request->price,
         ]);
 
         flash('Booking Registered Successfully! Follow the satus of booking.')->success();

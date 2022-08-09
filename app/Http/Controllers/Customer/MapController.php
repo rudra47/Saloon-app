@@ -36,13 +36,13 @@ class MapController extends Controller
                     );
             $distance = (json_decode($distance_data, true)['rows'][0]['elements'][0]['distance']['value']);
 
-            if($distance <= 1000){
+            if($distance <= 5000){
                 $saloons->add($saloon);
             }
         }
 
         //dd($saloons);
-        
+
         return view('customer.map', compact('saloons'));
     }
 

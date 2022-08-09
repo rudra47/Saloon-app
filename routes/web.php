@@ -1,6 +1,8 @@
 <?php
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
-
+//ADMIN CONTROLLERS
+use App\Http\Controllers\Admin\AdminSaloonController;
+use App\Http\Controllers\Admin\AdminCustomerController;
 //CUSTOMER CONTROLLERS
 use App\Http\Controllers\Customer\MapController;
 use App\Http\Controllers\Customer\CustomerController;
@@ -43,8 +45,10 @@ Route::prefix('app')->as('app.')->group(function () {
 
     Route::middleware('admin')->group(function () {
         Route::prefix('admin')->as('admin.')->group(function () {
-            Route::get('/saloons', [SaloonController::class, 'saloon'])->name('saloons');
-            Route::get('/customers', [CustomerController::class, 'customer'])->name('customers');
+            Route::get('/saloons', [AdminSaloonController::class, 'saloons'])->name('saloons');
+            Route::get('/saloons/activation/{saloon_id}', [AdminSaloonController::class, 'activation'])->name('saloons.activation');
+            Route::post('/saloons/activationStore/{saloon_id}', [AdminSaloonController::class, 'activationStore'])->name('saloons.activationStore');
+            Route::get('/customers', [AdminCustomerController::class, 'customers'])->name('customers');
         });
     });
     Route::middleware('saloon')->group(function () {

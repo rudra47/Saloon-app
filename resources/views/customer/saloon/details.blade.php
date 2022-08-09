@@ -67,6 +67,11 @@
                                         @csrf
                                         <input type="hidden" name="service" value="{{ $service->id }}">
                                         <input type="hidden" name="saloon_id" value="{{ $saloon->id }}">
+                                        @if($service->discount_price > 0)
+                                            <input type="hidden" name="price" value="@if($service->discount_type == 1) {{ $service->price - $service->discount_price }} @else {{ $service->price - ($service->discount_price*$service->price/100) }} @endif">
+                                        @else
+                                            <input type="hidden" name="price" value="{{ $service->price }}">
+                                        @endif
                                         <button class="btn btn-outline-dark mt-auto" type="submit">Book Now</button>
                                     </form>
                                 </div>
