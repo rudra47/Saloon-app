@@ -21,15 +21,15 @@ class MapController extends Controller
         //$coords = array_map(function($data) { return  $data['latitude'].",".$data['longitude']; }, $saloons->toArray() );
         //$from_latlong = implode("|", $coords);
         if(auth()->check()){
-            $to_latlong = "".auth()->user()->latitude.",".auth()->user()->longitude;
+            $from_latlong = "".auth()->user()->latitude.",".auth()->user()->longitude;
         }else{
-            $to_latlong = "23.7428818,90.4162051";
+            $from_latlong = "23.836720,90.422297";
         }
 
         $saloons = new Collection;
 
         foreach ($saloonsAll as $saloon){
-            $from_latlong = $saloon->latitude.",".$saloon->longitude;
+            $to_latlong = $saloon->latitude.",".$saloon->longitude;
             $googleApi = "AIzaSyBa0v-1H3GAkYu21zPyN_eUuedhxoTRZdw";
             $distance_data = file_get_contents(
                     'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='.$from_latlong.'&destinations='.$to_latlong.'&key='.$googleApi

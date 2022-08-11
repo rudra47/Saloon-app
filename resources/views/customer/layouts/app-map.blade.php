@@ -45,7 +45,11 @@
                 width: 100%;
             }
            
-            
+            .form-inline {
+                display: flex;
+                flex-flow: row wrap;
+                align-items: center;
+            }
         </style>
     </head>
     <body>
@@ -58,6 +62,21 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('map') }}">Map</a></li>
+                        <li class="nav-item">
+                            <div class="form-inline" style="margin-left: 20px;">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="search_location" id="locationSearchInput" placeholder="Search Location">
+                                </div>
+                                {{-- <button type="submit" class="btn btn-primary d-none" style="margin-left: 5px;">Search</button> --}}
+                                <div class="row" id="progress" style="margin-left: 5px;">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="spinner-border text-primary" role="status">
+                                          <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
                         {{-- <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -122,37 +141,24 @@
 
         <!---------------- Java Scripts for Map  ----------------->
         <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyCioD60UKGbPyLAFK8MoAH9UqySjVb50tw&v=3&language=en"></script>-->
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuSN0u2fpgle4eYZ1kxPHmTA8maKJynYE&sensor=false" /></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBa0v-1H3GAkYu21zPyN_eUuedhxoTRZdw&callback=initAutocomplete&libraries=places&v=weekly" /></script>
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 
         <script type="text/javascript">
-
-            var map;
-        
-            var markersArray_free = [];
-            var markersArray_free_prev = [];
-            var markersArray_anj = [];
-            var markersArray_anj_prev = [];
-            var markersArray_car = [];
-            var markersArray_route = [];
-        
-            var infos_free = [];
-            var infos_anj = [];
-            var infos_car = [];
-            var infos_route = [];
-        
+            var map;        
             var initMapView = false;
         
             var saloons = {!! json_encode($saloons) !!};
             var markerIcon = '{{ asset('/') }}marker.png';
-            var marks = [];
+            var markers = [];
             var pos = [];
         
             var defaultLat = {{ $defaultLat }};
             var defaultLong = {{ $defaultLong }};
         
             //console.log({{$saloons}});
+            $('#progress').hide();
         
             function initMap() {
         
@@ -169,6 +175,7 @@
                 
                 //addMarker_anjuman();
                 //addMarker_route_spot();
+                locate();
         
                 var bounds = new google.maps.LatLngBounds();
         
@@ -191,7 +198,126 @@
                         initMapView = true;
                     }
                 }
+
+                var input = document.getElementById('locationSearchInput');
+  
+                var autocomplete = new google.maps.places.Autocomplete(input,{
+                                                                                componentRestrictions: { country: ["bd"] },
+                                                                                fields: ["address_components", "geometry"],
+                                                                            });
+            
+                autocomplete.addListener('place_changed', function() {
+                    $('#progress').show();
+
+                    for(var i = 0; i < markers.length; i++) {
+                        markers[i].setMap(null);
+                    }
+                    markers = [];
+
+                    var place = autocomplete.getPlace();
+                    //alert(place.geometry.location.lat());
+                    // document.getElementById('location-snap').innerHTML = place.formatted_address;
+                    var selectedLatitude = place.geometry.location.lat();
+                    var selectedLongitude = place.geometry.location.lng();
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '/get-saloons/'+selectedLatitude+'/'+selectedLongitude,
+                        dataType: "JSON",
+                        success: function (response) {
+                            var bounds = new google.maps.LatLngBounds();
+
+                            var position = new google.maps.LatLng(parseFloat(selectedLatitude),parseFloat(selectedLongitude));
+                            bounds.extend(position);
+
+                            addSelectedLocationMarker(map,position);
+
+                            if(response.length > 0){
+                                $.each(response, function (key, val) { 
+                                    var position;
+                                    position = addMarker(val);
+                                    bounds.extend(position);
+                                });
+
+                                if(initMapView != true) {
+                                    map.fitBounds(bounds);
+                                    initMapView = true;
+                                }else{
+                                    map.fitBounds(bounds);
+                                    initMapView = true;
+                                }
+                                
+                            }else{
+                                //alert('nothing found! - '+selectedLatitude+','+selectedLongitude);
+                                map.fitBounds(bounds);
+                                initMapView = true;
+                            }
+                            //console.log(response.length);
+                            $('#progress').hide();
+                        },
+                        error: function(xhr) {
+                            console.log(xhr);
+                        }
+                    });
+                });
                 
+            }
+
+            function locate(){
+                if ("geolocation" in navigator){
+                    navigator.geolocation.getCurrentPosition(function(position){
+                        var currentLatitude = position.coords.latitude;
+                        var currentLongitude = position.coords.longitude;
+                        //alert("Current Latitude: " + currentLatitude);
+
+                        $.ajax({
+                            type: 'GET',
+                            url: '/get-saloons/'+currentLatitude+'/'+currentLongitude,
+                            dataType: "JSON",
+                            success: function (response) {
+                                var bounds = new google.maps.LatLngBounds();
+                                if(response.length > 0){
+                                    $.each(response, function (key, val) { 
+                                        var position;
+                                        position = addMarker(val);
+                                        bounds.extend(position);
+                                    });
+
+                                    if(initMapView != true) {
+                                        map.fitBounds(bounds);
+                                        initMapView = true;
+                                    }else{
+                                        map.fitBounds(bounds);
+                                        initMapView = true;
+                                    }
+                                    
+                                }else{
+                                    var position = new google.maps.LatLng(parseFloat(defaultLat),parseFloat(defaultLong));
+                                    bounds.extend(position);
+                                    if(initMapView != true) {
+                                        map.fitBounds(bounds);
+                                        initMapView = true;
+                                    }
+                                }
+                                console.log(response.length);
+                                //$('#progress').hide();
+                            },
+                            error: function(xhr) {
+                                console.log(xhr);
+                            }
+                        });
+                    },
+                    () => {
+                        //$('#progress').hide();
+                        //$('#saloon-data').hide();
+                        //$('#saloon-data-default').show();
+                    }
+                    );
+                }else{
+                    //$('#progress').hide();
+                    //$('#saloon-data').hide();
+                    //$('#saloon-data-default').show();
+                }
             }
         
             function addMarker(saloon){
@@ -204,57 +330,8 @@
                 var longitude = saloon.longitude;
                 //alert('ttt: '+id+'');
         
-                //var confirm = "Are you sure?";
-        
                 var html = '<div style="margin-bottom: 10px;"><h3>' + name + '</h3>' + email +'<br/>'+phone+'<br/>'+address+'</div>';
-                // html += '<div><table class="table table-responsive table-bordered"><thead><tr><th>Schedule</th><th>Book</th></tr></thead>';
-                // html += '<tbody>';
-                // html += '<tr><td>12:30pm - 2:00pm</td><td><button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Book Now</button></td></tr>';
-                // html += '</tr>';
-                // html += '</table></div>';
-        
-                // html += '<div><form method="post" action="{{ route('saloon.view', '+id+') }}">';
-                // html += 	'@csrf';
-                // html += 	'<span style="font-size: 16px; font-weight: bold;"><b>Select Service: </b>';
-                // html += 		'<select name="service" style="margin-top: 5px;" required>';
-                // html += 			'<option value="">---Select---</option>';
-                // html += 			'<option value="0">Hair cut</option>';
-                // html += 			'<option value="0">Head massage</option>';
-                // html += 			'<option value="0">Hair color</option>';
-                // html +=			'</select>';
-                // html +=		'</span><br/>';
                 html += 	'<div><a href="/saloon/'+id+'" class="btn btn-sm btn-primary" style="margin: 5px;">View Details</a></div>';
-                // html += '</form></div>';
-        
-                // html += '<div class="modal" id="exampleModal" tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">';
-                // html += 	'<div class="modal-dialog" role="document">';
-                // html += 		'<div class="modal-content">';
-                // html += 			'<div class="modal-header">';
-                // html += 				'<h5 class="modal-title" id="exampleModalLabel">New message</h5>';
-                // html += 				'<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
-                // html += 					'<span aria-hidden="true">&times;</span>';
-                // html += 				'</button>';
-                // html += 			'</div>';
-                // html += 			'<div class="modal-body">';
-                // html += 				'<form>';
-                // html += 					'<div class="form-group">';
-                // html += 						'<label for="recipient-name" class="col-form-label">Recipient:</label>';
-                // html += 						'<input type="text" class="form-control" id="recipient-name">';
-                // html += 					'</div>';
-                // html += 					'<div class="form-group">';
-                // html += 						'<label for="message-text" class="col-form-label">Message:</label>';
-                // html += 						'<textarea class="form-control" id="message-text"></textarea>';
-                // html += 					'</div>';
-                // html += 				'</form>';
-                // html += 			'</div>';
-                // html += 			'<div class="modal-footer">';
-                // html += 				'<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>';
-                // html += 				'<button type="button" class="btn btn-primary">Send message</button>';
-                // html += 			'</div>';
-                // html += 		'</div>';
-                // html += 	'</div>';
-                // html += '</div>';
-        
         
                 var markerLatlng = new google.maps.LatLng(parseFloat(latitude),parseFloat(longitude));
         
@@ -264,6 +341,7 @@
                     position: markerLatlng,
                     icon: markerIcon
                 });
+                markers.push(mark);
         
                 var infoWindow = new google.maps.InfoWindow;
                 google.maps.event.addListener(mark, 'click', function(){
@@ -273,121 +351,27 @@
         
                 return markerLatlng;
             }
-        
-            function addMarker_saloon() {
-                
-                //map.clearOverlays();
-        
-                //Initialize a variable that the auto-size the map to whatever you are plotting
-                var bounds = new google.maps.LatLngBounds();
-                //Initialize the encoded string
-                //var encodedString;
-                //Initialize the array that will hold the contents of the split string
-                var stringArray = ['Saloon1', 'Saloon2', 'Saloon3', 'Saloon4'];
-                //Get the value of the encoded string from the hidden input
-                //encodedString = document.getElementById("encodedString").value;
-                //Split the encoded string into an array the separates each location
-                //stringArray = result.split("****");
-                var lats = ['23.7507983', '23.7519229', '23.7517265', '23.7570539'];
-                var longs = ['90.4219536', '90.4048733', '90.4106669', '90.4120373'];
-        
-                var x;
-                for (x = 0; x < stringArray.length; x = x + 1) {
-                    var marker;
-                    //Separate each field
-                    //Load the lat, long data
-                    var pos = new google.maps.LatLng(parseFloat(lats[x]), parseFloat(longs[x]));
-                    //Create a new marker and info window
-        
-                    var markerIcon = '{{ asset('/') }}marker.png';
-                    //alert(markerIcon[3]);
-                    marker = new google.maps.Marker({
-                        map: map,
-                        position: pos,
-                        icon: markerIcon,
-                        //Content is what will show up in the info window
-                        content: stringArray[x]
-                    });
-                    //Pushing the markers into an array so that it's easier to manage them
-                    //markersArray_free.push(marker);
-                    google.maps.event.addListener( marker, 'click', function () {
-                        var info = new google.maps.InfoWindow({content: this.content});
-                        //On click the map will load the info window
-                        info.open(map,this);
-                        //infos_free[0]=info;
-                    });
-                    //Extends the boundaries of the map to include this new location
-                    bounds.extend(pos);
-                }
-                
-                //Takes all the lat, longs in the bounds variable and autosizes the map
-                if(initMapView != true) {
-                    map.fitBounds(bounds);
-                    initMapView = true;
-                }
-            }
 
+            function addSelectedLocationMarker(map,position){
+                var markerIcon = '{{ asset('/') }}marker-selected.png';
+
+                var mark = new google.maps.Marker({
+                    map: map,
+                    position: position,
+                    icon: markerIcon
+                });
+                markers.push(mark);
         
-            // update from MAP
-            function updateMarker(obj) {
-        
-                var frm = $(obj).closest("form");
-                
-                $.ajax({
-                    type: "POST",
-                    url: "index.php?page=map_controller",
-                    data: frm.serialize(),
-                    cache: false,
-                    success: function(result){
-                        if(result==1){
-                            
-                            return false;
-                        } else{
-                            alertify.error("FAILED!");
-                            return false;
-                        }
-                    }
+                var infoWindow = new google.maps.InfoWindow;
+                google.maps.event.addListener(mark, 'click', function(){
+                    // infoWindow.setContent(html);
+                    infoWindow.open(map, mark);
                 });
             }
-        
-            function filter() {
-            
-                url = 'index.php?page=map';
-                
-                var zone_profile_id = $('select[name=\'zone_profile_id\']').attr('value');
-                if (zone_profile_id) {
-                    url += '&zone_profile_id=' + encodeURIComponent(zone_profile_id);
-                }
-                
-                var route_profile_id = $('select[name=\'route_profile_id\']').attr('value');
-                if (route_profile_id) {
-                    url += '&route_profile_id=' + encodeURIComponent(route_profile_id);
-                }
-                
-                var area_id = $('select[name=\'area_id\']').attr('value');
-                if (area_id>0) {
-                    url += '&route_area_id=' + encodeURIComponent(area_id);
-                }
-                
-                var collector = $('select[name=\'collector\']').attr('value');
-                if (collector) {
-                    url += '&collector=' + encodeURIComponent(collector);
-                }
-                
-                var leather_type = $('select[name=\'leather_type\']').attr('value');
-                if (leather_type) {
-                    url += '&leather_type=' + encodeURIComponent(leather_type);
-                }
-                
-                var reference_id = $('input[name=\'reference_id\']').attr('value');
-                if (reference_id) {
-                    url += '&reference_id=' + encodeURIComponent(reference_id);
-                }
-                
-                location = url;	
-            }
+
             
         </script>
+        {{-- <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script> --}}
         <div class="jumbotron">
         <div id="map-canvas"></div>
         </div>
@@ -395,10 +379,10 @@
             $(document).ready(function(){
                 initMap();
                 setInterval(function mapload(){
-                },3000);  // 5 min
+                },3000);  // 3 sec
         
                 setInterval(function mapload(){
-                },10000);  // 10 sec
+                },3000);  // 3 sec
             });
         </script>
     </body>
