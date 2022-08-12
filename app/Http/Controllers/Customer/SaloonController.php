@@ -140,7 +140,7 @@ class SaloonController extends Controller
         flash('Booking Registered Successfully! Follow the satus of booking.')->success();
         return back();
     }
-
+ 
     /**
      * Display the specified resource.
      *
