@@ -150,10 +150,7 @@ class SaloonController extends Controller
     public function show($id)
     {
         $saloon = Saloon::find($id);
-
         $services = $saloon->services()->where('status', 1)->get();
-
-        //dd($services);
 
         return view('customer.saloon.details', compact('saloon', 'services'));
     }
