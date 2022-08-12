@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 // CUSTOMER PANEl ROUTES
 Route::get('/', [PagesController::class, 'index'])->name('home');
+Route::get('get-saloons/{latitude}/{longitude}', [PagesController::class, 'getSaloons'])->name('getSaloons');
 
 Route::get('/map', [MapController::class, 'index'])->name('map');
 

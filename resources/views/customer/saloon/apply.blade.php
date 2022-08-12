@@ -94,9 +94,6 @@
 
                         <form method="POST" action="{{ route('saloon.apply.submit') }}" class="md-float-material form-material" enctype="multipart/form-data">
                             @csrf
-                            <div class="text-center">
-                                <img src="{{ asset('/') }}adminity/files/assets/images/logo.png" alt="logo.png">
-                            </div>
                             <div class="auth-box card">
                                 <div class="card-block">
                                     <div class="row m-b-20">
@@ -137,7 +134,7 @@
                                     <div class="form-group form-primary">
                                         <label for="latitude">Saloon Location Latitude</label><br/>
                                         <span style="font-size:10px; color: #1726df;">*Mark you location on google map & copy the <b>Latitude</b></span>
-                                        <input type="text" name="latitude" class="form-control @error('latitude') is-invalid @enderror" placeholder="Your Location Latitude" value="{{ old('latitude') }}" required autocomplete="off" style="margin-top: 5px;">
+                                        <input type="text" name="latitude" id="latitude" class="form-control @error('latitude') is-invalid @enderror" placeholder="Your Location Latitude" value="{{ old('latitude') }}" required autocomplete="off" style="margin-top: 5px;">
                                         <span class="form-bar"></span>
                                         @error('latitude')
                                             <span class="invalid-feedback" role="alert">
@@ -148,7 +145,7 @@
                                     <div class="form-group form-primary">
                                         <label for="longitude">Saloon Location Longitude</label><br/>
                                         <span style="font-size:10px; color: #1726df;">*Mark you location on google map & copy the <b>Longitude</b></span>
-                                        <input type="text" name="longitude" class="form-control @error('longitude') is-invalid @enderror" placeholder="Your Location Longitude" value="{{ old('longitude') }}" required autocomplete="off" style="margin-top: 5px;">
+                                        <input type="text" name="longitude" id="longitude" class="form-control @error('longitude') is-invalid @enderror" placeholder="Your Location Longitude" value="{{ old('longitude') }}" required autocomplete="off" style="margin-top: 5px;">
                                         <span class="form-bar"></span>
                                         @error('longitude')
                                             <span class="invalid-feedback" role="alert">
@@ -219,3 +216,27 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function () {
+
+        //let html = '<h5 class="text-center">No saloon found!</h5>';
+        locate();
+
+        function locate(){
+            if ("geolocation" in navigator){
+                navigator.geolocation.getCurrentPosition(function(position){ 
+                    var currentLatitude = position.coords.latitude;
+                    var currentLongitude = position.coords.longitude;
+
+                    $('#latitude').val(currentLatitude);
+                    $('#longitude').val(currentLongitude);
+                });
+            }
+        }
+
+        
+    });
+</script>
+@endpush

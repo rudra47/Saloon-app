@@ -126,7 +126,7 @@
                                     </div>
                                     <div class="form-group form-primary">
                                         <label for="latitude">Latitude</label>
-                                        <input type="text" name="latitude" class="form-control @error('latitude') is-invalid @enderror" placeholder="Your Location Latitude" value="{{ auth()->user()->latitude }}" required autocomplete="off">
+                                        <input type="text" name="latitude" id="latitude" class="form-control @error('latitude') is-invalid @enderror" placeholder="Your Location Latitude" value="{{ auth()->user()->latitude }}" required autocomplete="off">
                                         <span class="form-bar"></span>
                                         @error('latitude')
                                             <span class="invalid-feedback" role="alert">
@@ -136,7 +136,7 @@
                                     </div>
                                     <div class="form-group form-primary">
                                         <label for="longitude">Longitude</label>
-                                        <input type="text" name="longitude" class="form-control @error('longitude') is-invalid @enderror" placeholder="Your Location Longitude" value="{{ auth()->user()->longitude }}" required autocomplete="off">
+                                        <input type="text" name="longitude" id="longitude" class="form-control @error('longitude') is-invalid @enderror" placeholder="Your Location Longitude" value="{{ auth()->user()->longitude }}" required autocomplete="off">
                                         <span class="form-bar"></span>
                                         @error('longitude')
                                             <span class="invalid-feedback" role="alert">
@@ -146,9 +146,12 @@
                                     </div>
                                     
                                     <div class="row m-t-30">
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <button type="submit"
                                                     class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20" style="float: right:">Update Info</button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a href="#"class="waves-effect waves-light text-center m-b-20" id="getLocation" style="float: right:">Get Current Location</a>
                                         </div>
                                     </div>
                                 </div>
@@ -211,3 +214,29 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function () {
+
+        $(document).on('click', '#getLocation', function(e) {
+                e.preventDefault();
+       
+            if ("geolocation" in navigator){
+                navigator.geolocation.getCurrentPosition(function(position){ 
+                    var currentLatitude = position.coords.latitude;
+                    var currentLongitude = position.coords.longitude;
+                    //alert("Current Latitude: " + currentLatitude);
+
+                    $('#latitude').val(currentLatitude);
+                    $('#longitude').val(currentLongitude);
+                });
+            }
+        
+
+        });
+
+        
+    });
+</script>
+@endpush
