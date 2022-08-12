@@ -47,7 +47,7 @@
                                         </td>
                                         <td class="text-center">
                                             <button type="button" class="btn-primary-1 formModalBtn"
-                                                    modal-title="Booking Confirmation"
+                                                    modal-title="Saloon Activation"
                                                     data-action="{{ route('app.admin.saloons.activation', $saloon->id) }}"
                                                     data-toggle="modal" data-target="#formModal"> Manage </button>
                                         </td>
