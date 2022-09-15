@@ -128,13 +128,17 @@ class SaloonController extends Controller
         $this->validate($request, [
             'service'    => 'required|int',
             'saloon_id'  => 'required|int',
+            'booking_date'  => 'required',
         ]);
+
+        //dd($request->booking_date);
 
         Booking::create([
             'user_id'               => auth()->user()->id,
             'saloon_id'             => $request->saloon_id,
             'saloon_service_id'     => $request->service,
             'price'                 => $request->price,
+            'booking_apply_time'    => $request->booking_date,
         ]);
 
         flash('Booking Registered Successfully! Follow the satus of booking.')->success();
