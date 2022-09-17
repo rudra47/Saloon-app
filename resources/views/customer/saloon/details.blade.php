@@ -63,7 +63,7 @@
                             <!-- Saloon actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="text-center">
-                                    <form action="{{ route('saloon.book') }}" method="post">
+                                    <!-- <form action="{{ route('saloon.book') }}" method="post">
                                         @csrf
                                         <input type="hidden" name="service" value="{{ $service->id }}">
                                         <input type="hidden" name="saloon_id" value="{{ $saloon->id }}">
@@ -73,9 +73,43 @@
                                             <input type="hidden" name="price" value="{{ $service->price }}">
                                         @endif
                                         <button class="btn btn-outline-dark mt-auto" type="submit">Book Now</button>
+                                    </form> -->
+                                    <button class="btn btn-outline-dark mt-auto" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{ $service->id }}">Book Now</button>
+                                </div>
+                            </div>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal{{ $service->id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ $service->id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <form action="{{ route('saloon.book') }}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="service" value="{{ $service->id }}">
+                                        <input type="hidden" name="saloon_id" value="{{ $saloon->id }}">
+                                        @if($service->discount_price > 0)
+                                            <input type="hidden" name="price" value="@if($service->discount_type == 1) {{ $service->price - $service->discount_price }} @else {{ $service->price - ($service->discount_price*$service->price/100) }} @endif">
+                                        @else
+                                            <input type="hidden" name="price" value="{{ $service->price }}">
+                                        @endif
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel{{ $service->id }}">Book - {{ $service->name }}</h5>
+                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <label for="booking_date">Select Preffered Date & Time</label>
+                                                <input type="datetime-local" class="form-control" name="booking_date" id="booking_date" required>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 @endforeach

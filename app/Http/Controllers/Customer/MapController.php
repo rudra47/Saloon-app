@@ -21,10 +21,16 @@ class MapController extends Controller
         //$coords = array_map(function($data) { return  $data['latitude'].",".$data['longitude']; }, $saloons->toArray() );
         //$from_latlong = implode("|", $coords);
         if(auth()->check()){
-            $from_latlong = "".auth()->user()->latitude.",".auth()->user()->longitude;
+            if(auth()->user()->latitude && auth()->user()->longitude) {
+                $from_latlong = "".auth()->user()->latitude.",".auth()->user()->longitude;
+            }else{
+                $from_latlong = "23.836720,90.422297";
+            }
         }else{
             $from_latlong = "23.836720,90.422297";
         }
+
+        //dd($from_latlong);
 
         $saloons = new Collection;
 
