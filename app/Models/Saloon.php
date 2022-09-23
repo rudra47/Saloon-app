@@ -20,3 +20,4 @@ class Saloon extends Model
         return $this->hasMany(SaloonService::class);
     }
 }
+
