@@ -11,7 +11,7 @@ class Booking extends Model
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['user_id', 'saloon_id', 'saloon_service_id', 'price', 'booking_apply_time', 'booking_confirm_time', 'status'];
+    protected $fillable = ['user_id', 'saloon_id', 'saloon_service_id', 'price', 'booking_apply_time', 'booking_confirm_time', 'transaction_no', 'status'];
 
     public function customer()
     {

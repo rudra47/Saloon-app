@@ -25,9 +25,10 @@ class BookingController extends Controller
 
     public function confirmationStore(Request $request, $booking_id)
     {
-        Booking::find($booking_id)->update([
-            'status' => $request->status,
-            'booking_confirm_time' => $request->booking_confirm_time
+        $booking = Booking::find($booking_id);
+        $booking->update([
+            'status' => $request->status ?? $booking->status,
+            'booking_confirm_time' => $request->booking_confirm_time ?? $booking->booking_confirm_time
         ]);
         return redirect()->route('app.saloon.bookings.index');
     }
