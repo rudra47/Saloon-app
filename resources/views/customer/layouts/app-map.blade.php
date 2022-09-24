@@ -94,7 +94,7 @@
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item text-center" href="#" onclick="event.preventDefault();" style="cursor: auto; font-weight: bold;">{{ auth()->user()->name }}</a></li>
                                     <li><hr class="dropdown-divider" /></li>
-                                    <li><a class="dropdown-item" href="#!"><i class="bi-filter-right me-1"></i> My Bookings</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('bookings') }}"><i class="bi-filter-right me-1"></i> My Bookings</a></li>
                                     <li><hr class="dropdown-divider" /></li>
                                     <li><a class="dropdown-item" href="{{ route('profile') }}"><i class="bi-person-fill me-1"></i> My Profile</a></li>
                                     <li><hr class="dropdown-divider" /></li>

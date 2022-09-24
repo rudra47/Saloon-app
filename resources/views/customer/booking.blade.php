@@ -33,14 +33,39 @@
                     <tr>
                         <td>{{ $loop->index+1 }}</td>
                         <td>{{ $booking->name }}</td>
-                        <td class="text-center">@if($booking->status==2) <span style="color:red; border:1px solid red; font-size: 14px; padding: 5px; border-radius: 5px;">Pending</span> @elseif($booking->status==1) <span style="color:green; border:1px solid green; font-size: 14px; padding: 5px; border-radius: 5px;">Accepted</span> @else <span style="color:rgb(107, 5, 5); border:1px solid rgb(107, 5, 5); font-size: 14px; padding: 5px; border-radius: 5px;">Rejected</span> @endif</td>
+                        <td class="text-center">
+                            @if($booking->status==0) 
+                                <span style="color:red; border:1px solid red; font-size: 14px; padding: 5px; border-radius: 5px;">Pending</span> 
+                            @elseif($booking->status==1) 
+                                <span style="color:green; border:1px solid green; font-size: 14px; padding: 5px; border-radius: 5px;">Paid</span> 
+                            @elseif($booking->status==2)
+                                <span style="color:rgb(107, 5, 5); border:1px solid rgb(107, 5, 5); font-size: 14px; padding: 5px; border-radius: 5px;">Canceled</span>
+                            @elseif($booking->status==3) 
+                                <span style="color:green; border:1px solid green; font-size: 14px; padding: 5px; border-radius: 5px;">Active</span>
+                            @elseif($booking->status==4)
+                            <span style="color:green; border:1px solid green; font-size: 14px; padding: 5px; border-radius: 5px;">Completed</span> 
+                            @endif</td>
                         <td>{{ $booking->booking_apply_time != NULL ? date('d-m-Y g:ia', strtotime($booking->booking_apply_time)) : '' }}</td>
                         <td>
                             @if(!is_null($booking->booking_confirm_time))
                             {{ date('d-m-Y g:ia', strtotime($booking->booking_confirm_time)) }}
                             @endif
                         </td>
-                        <td class="text-center">@if($booking->status==2)<a class="btn btn-danger"href="{{ route('bookings.cancel', $booking->id) }}"><i class="bi-x-lg me-1"> Cancel</a>@else - @endif</td>
+                        <td class="text-center">
+                            @if($booking->status==0)
+                                @if($booking->booking_confirm_time != NULL && $booking->booking_confirm_time != '')
+                                    <button type="button" class="btn btn-primary formModalBtn"
+                                        modal-title="30% Payment Transaction Proof"
+                                        data-action="{{ route('bookings.confirmation', $booking->id) }}"
+                                        data-toggle="modal" data-target="#formModal"> Ok, Confirm </button>
+                                @endif
+                                <a class="btn btn-danger" href="{{ route('bookings.cancel', $booking->id) }}"><i class="bi-x-lg me-1"> Cancel</a>
+                            @elseif($booking->status==1)
+                                <span class="text-success">Paid</span>
+                            @else
+                             - 
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
                 @else
@@ -52,3 +77,37 @@
     </div>
 </section>
 @endsection
+@push('scripts')
+<script>
+    $('.formModalBtn').on('click', function (e) {
+        e.preventDefault();
+        $(".loader").show();
+        let url = $(this).attr('data-action');
+        let modalTitle = $(this).attr('modal-title');
+
+        $("#formModalBody").html("");
+        $("#formModalLabel").html("");
+        $.ajax({
+            url: url,
+            method: 'get',
+            dataType: 'html',
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (response) {
+                $('#formModalLabel').html(modalTitle);
+                $('#formModalBody').html(response);
+                $("#formModal").modal('show');
+                $(".loader").hide();
+            },
+            error: function (response) {
+            }
+        });
+    })
+
+    $('.modal').on('mousedown mouseup click', '.multiselect-container', function(e) {
+        e.preventDefault();
+    });
+
+</script>
+@endpush

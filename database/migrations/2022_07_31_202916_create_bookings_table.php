@@ -22,7 +22,7 @@ class CreateBookingsTable extends Migration
             $table->dateTime('booking_apply_time')->nullable();
             $table->dateTime('booking_confirm_time')->nullable();
             $table->string('transaction_no', 50)->nullable();
-            $table->unsignedTinyInteger('status')->default(2)->comment('2=>Pending, 1=> Active, 0=>Inactive');
+            $table->unsignedTinyInteger('status')->default(0)->comment('4=>Completed, 3=>Active, 2=>Canceled, 1=> Paid, 0=>Pending');
             $table->timestamps();
         });
     }

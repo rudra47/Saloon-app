@@ -32,6 +32,8 @@ Route::post('/profile/edit', [CustomerController::class, 'update'])->name('profi
 Route::post('/profile/change-password/{id}', [CustomerController::class, 'update_password'])->name('profile.changePassword')->middleware('auth');
 Route::get('/bookings', [CustomerController::class, 'bookings'])->name('bookings')->middleware('auth');
 Route::get('/bookings/cancel/{id}', [CustomerController::class, 'destroy'])->name('bookings.cancel')->middleware('auth');
+Route::get('/bookings/confirm/{id}', [CustomerController::class, 'confirmation'])->name('bookings.confirmation')->middleware('auth');
+Route::post('/bookings/confirmationStore/{id}', [CustomerController::class, 'confirmationStore'])->name('bookings.confirmationStore')->middleware('auth');
 
 
 //ADMIN PANEL

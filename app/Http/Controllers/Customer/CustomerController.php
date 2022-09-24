@@ -154,4 +154,20 @@ class CustomerController extends Controller
 
         return back();
     }
+
+    public function confirmation($booking_id)
+    {
+        $booking = Booking::find($booking_id);
+        return view('customer.bookings.confirmation', compact('booking'));
+    }
+
+    public function confirmationStore(Request $request, $booking_id)
+    {
+        $booking = Booking::find($booking_id);
+        $booking->update([
+            'transaction_no' => $request->transaction_no,
+            'status' => 1
+        ]);
+        return redirect()->route('bookings');
+    }
 }

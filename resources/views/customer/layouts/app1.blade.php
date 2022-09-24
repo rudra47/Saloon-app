@@ -75,6 +75,27 @@
 
         @yield('content')
 
+        <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="formModalLabel"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="loader text-center">
+                            <img src="{{asset('adminity/loader.gif')}}" width="80" alt="">
+                        </div>
+                        <div id="formModalBody">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Footer-->
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Smart Saloon {{ date('Y') }}</p></div>
