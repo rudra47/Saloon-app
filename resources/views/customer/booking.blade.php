@@ -21,6 +21,7 @@
                     <tr>
                         <th>SL#</th>
                         <th>Service</th>
+                        <th>Booking Price</th>
                         <th class="text-center">Booking Status</th>
                         <th>Booking Date</th>
                         <th>Saloon Schedule</th>
@@ -33,6 +34,7 @@
                     <tr>
                         <td>{{ $loop->index+1 }}</td>
                         <td>{{ $booking->name }}</td>
+                        <td>BDT {{ $booking->price }}</td>
                         <td class="text-center">
                             @if($booking->status==0) 
                                 <span style="color:red; border:1px solid red; font-size: 14px; padding: 5px; border-radius: 5px;">Pending</span> 
