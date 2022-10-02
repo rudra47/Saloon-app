@@ -100,7 +100,9 @@
                                             <h3 class="text-center">Sign Up</h3>
                                         </div>
                                     </div>
-
+                                    @if($errors->any())
+                                        {!! implode('', $errors->all('<div class="alert alert-danger">:message</div>')) !!}
+                                    @endif
                                     <div class="form-group form-primary">
                                         <label for="name">{{ __('Name') }}</label>
                                         <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -117,6 +119,27 @@
                                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
         
                                         @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group form-primary">
+                                        <label for="latitude">Latitude</label>
+                                        <input type="text" name="latitude" id="latitude" class="form-control @error('latitude') is-invalid @enderror" placeholder="Your Location Latitude" value="{{ old('latitude') }}" required autocomplete="off">
+                                        <span class="form-bar"></span>
+                                        @error('latitude')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group form-primary">
+                                        <label for="longitude">Longitude</label>
+                                        <input type="text" name="longitude" id="longitude" class="form-control @error('longitude') is-invalid @enderror" placeholder="Your Location Longitude" value="{{ old('longitude') }}" required autocomplete="off">
+                                        <span class="form-bar"></span>
+                                        @error('longitude')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -139,7 +162,10 @@
                                     </div>
 
                                     <div class="row m-t-30">
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
+                                            <a href="#"class="waves-effect waves-light text-center m-b-20" id="getLocation" style="float: right:">Get Current Location</a>
+                                        </div>
+                                        <div class="col-md-6">
                                             <button type="submit" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20" style="float: right;">{{ __('Submit') }}</button>
                                         </div>
                                     </div>
@@ -158,3 +184,29 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function () {
+
+        $(document).on('click', '#getLocation', function(e) {
+                e.preventDefault();
+       
+            if ("geolocation" in navigator){
+                navigator.geolocation.getCurrentPosition(function(position){ 
+                    var currentLatitude = position.coords.latitude;
+                    var currentLongitude = position.coords.longitude;
+                    //alert("Current Latitude: " + currentLatitude);
+
+                    $('#latitude').val(currentLatitude);
+                    $('#longitude').val(currentLongitude);
+                });
+            }
+        
+
+        });
+
+        
+    });
+</script>
+@endpush
