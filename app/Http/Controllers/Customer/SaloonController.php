@@ -156,7 +156,58 @@ class SaloonController extends Controller
         $saloon = Saloon::find($id);
         $services = $saloon->services()->where('status', 1)->get();
 
-        return view('customer.saloon.details', compact('saloon', 'services'));
+        $close_status = 0;
+        $off_day_status = 0;
+
+        $startTime = strtotime($saloon->start_time);
+        $nowTime = strtotime(date('H:i:s'));
+        $diff = $nowTime - $startTime;
+
+        if($diff<0){
+            $close_status = 1;
+        }
+
+        $starts = explode(':', $saloon->start_time);
+        $start_hour = intval($starts[0]);
+
+        $ends = explode(':', $saloon->end_time);
+        $end_hour = intval($ends[0]);
+
+        if($start_hour > $end_hour){
+            if(intval(date('H')) < $start_hour){
+                $endTime = strtotime($saloon->end_time);
+                $diff1 = $endTime - $nowTime;
+
+                if($diff1<0){
+                    $close_status = 1;
+                }else{
+                    $close_status = 0;
+                }
+
+                //dd($diff1);
+            }else{
+                $close_status = 0;
+            }
+        }else{
+            $endTime = strtotime($saloon->end_time);
+            $diff1 = $endTime - $nowTime;
+
+            if($diff1<0){
+                $close_status = 1;
+            }
+        }
+
+        $off_days = explode(',', $saloon->off_days);
+        //dd($off_days);
+
+        if(in_array(date('l'), $off_days)){
+            $close_status = 1;
+            $off_day_status = 1;
+        }
+
+        //dd(date('l'));
+
+        return view('customer.saloon.details', compact('saloon', 'services', 'close_status', 'off_day_status'));
     }
 
     /**

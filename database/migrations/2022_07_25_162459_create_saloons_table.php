@@ -25,6 +25,9 @@ class CreateSaloonsTable extends Migration
             $table->text('image')->nullable();
             $table->text('cover_image')->nullable();
             $table->tinyInteger('status')->default(2)->comment('2=>Pending, 1=> Active, 0=>Inactive');
+            $table->string('start_time', 20)->nullable();
+            $table->string('end_time', 20)->nullable();
+            $table->string('off_days', 150)->nullable();
             $table->timestamps();
         });
     }

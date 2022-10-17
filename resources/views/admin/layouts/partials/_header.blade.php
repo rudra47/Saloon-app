@@ -7,7 +7,7 @@
             </a>
             <a href="../index-2.html">
 {{--                <img class="img-fluid" src="{{ asset('/') }}adminity/files/assets/images/logo.png" alt="Theme-Logo" />--}}
-                <h4>Smart Saloon</h4>
+                <h4>{{ evn('APP_NAME') }}</h4>
             </a>
             <a class="mobile-options">
                 <i class="feather icon-more-horizontal"></i>

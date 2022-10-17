@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Smart Saloon Service</title>
+        <title>{{ env('APP_NAME') }}</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="{{ asset('/') }}images/favicon.ico" />
         <!-- Bootstrap icons-->
@@ -22,7 +22,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="{{ route('home') }}">Smart Saloon</a>
+                <a class="navbar-brand" href="{{ route('home') }}">{{ env('APP_NAME') }}</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
@@ -65,7 +65,7 @@
                         <li class="nav-item" style="margin-left: 10px;">
                             <a href="{{ route('saloon.apply') }}" class="btn btn-outline-light" type="submit">
                                 <i class="bi-plus-circle-fill me-1"></i>
-                                Apply as a Saloon
+                                Apply as a Service Provider
                             </a>
                         </li>
                     </ul>
@@ -98,7 +98,7 @@
 
         <!-- Footer-->
         <footer class="py-5 bg-dark">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Smart Saloon {{ date('Y') }}</p></div>
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; {{ env('APP_NAME') }} {{ date('Y') }}</p></div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -16,10 +16,10 @@
     <div class="container px-4 px-lg-5 mt-2">
         <div class="row">
             <div class="col-sm-6">
-                <h3>My Bookings (Pending)</h3>
+                <h3>My Bookings</h3>
             </div>
             <div class="col-sm-6">
-                <a class="btn btn-success float-right" href="{{ route('bookings.all') }}" style="float: right;">View Completed Bookings <i class="bi-arrow-right"></i></a>
+                <a class="btn btn-success float-right" href="{{ route('bookings') }}" style="float: right;">View Pending Bookings <i class="bi-arrow-right"></i></a>
             </div>
         </div>
         <hr/>
@@ -68,7 +68,7 @@
                                         data-action="{{ route('bookings.confirmation', $booking->id) }}"
                                         data-toggle="modal" data-target="#formModal"> Ok, Confirm </button>
                                 @endif
-                                <a class="btn btn-danger" href="{{ route('bookings.cancel', $booking->id) }}"><i class="bi-x-lg me-1"></i> Cancel</a>
+                                <a class="btn btn-danger" href="{{ route('bookings.cancel', $booking->id) }}"><i class="bi-x-lg me-1"> Cancel</a>
                             @elseif($booking->status==1)
                                 <span class="text-success">Paid</span>
                             @else

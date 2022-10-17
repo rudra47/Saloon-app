@@ -12,6 +12,8 @@
                 @if($saloon->phone)<p class="lead fw-normal text-white-50 mb-0">{{ $saloon->phone }}</p>@endif
                 @if($saloon->email)<p class="lead fw-normal text-white-50 mb-0">{{ $saloon->email }}</p>@endif
                 @if($saloon->address)<p class="lead fw-normal text-white-50 mb-0">{{ $saloon->address }}</p>@endif
+
+                @if($close_status)<p class="lead fw-normal text-danger">Closed @if($off_day_status) <span class="text-info">(Off Day)</span> @else <span class="text-success">(Opens at {{ date('g:ia', strtotime($saloon->start_time)) }})</span> @endif</p>@else <p class="lead fw-normal text-success">Open <span class="text-danger">(Closes at {{ date('g:ia', strtotime($saloon->end_time)) }})</span></p> @endif
             </div>
         </div>
     </header>
@@ -74,7 +76,11 @@
                                         @endif
                                         <button class="btn btn-outline-dark mt-auto" type="submit">Book Now</button>
                                     </form> -->
+                                    @if($close_status)
+                                        <p class="lead fw-normal text-danger">Closed</p>
+                                    @else
                                     <button class="btn btn-outline-dark mt-auto" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{ $service->id }}">Book Now</button>
+                                    @endif
                                 </div>
                             </div>
 

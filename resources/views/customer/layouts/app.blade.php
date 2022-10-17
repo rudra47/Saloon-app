@@ -4,7 +4,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title>Saloons</title>
+		<title>{{ evn('APP_NAME') }}</title>
 		<link href="{{ asset('/') }}image/pevicon.jpg" rel="icon" />
 		
 		<link rel="stylesheet" type="text/css" href="{{ asset('/') }}fontawesome/css/all.min.css" />
@@ -83,7 +83,7 @@
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 		  <div class="navbar-header">
-			<a class="navbar-brand" href="{{ route('home') }}">WebSiteName</a>
+			<a class="navbar-brand" href="{{ route('home') }}">{{ evn('APP_NAME') }}</a>
 		  </div>
 
 		  <ul class="nav navbar-nav">
@@ -95,7 +95,7 @@
 			<!-- <li><a href="{{ route('map') }}">Map</a></li> -->
 		  </ul>
 		  <ul class="nav navbar-nav navbar-right">
-			<li><a href="{{ route('saloon.apply') }}" style="border: 1px solid rgb(20, 155, 50); border-radius: 5px; padding-top: 5px; padding-bottom: 5px; margin-top: 7px;">Apply as a Saloon</a></li>
+			<li><a href="{{ route('saloon.apply') }}" style="border: 1px solid rgb(20, 155, 50); border-radius: 5px; padding-top: 5px; padding-bottom: 5px; margin-top: 7px;">Apply as a Service Provider</a></li>
 			@if(auth()->check())
 				<li><a href="#" onclick="event.preventDefault();" style="cursor: auto;">Welcome, {{ auth()->user()->name }}</a></li>
 				<li>

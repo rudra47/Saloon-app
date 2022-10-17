@@ -35,9 +35,28 @@ class CustomerController extends Controller
             ->leftJoin('saloon_services', 'bookings.saloon_service_id', '=', 'saloon_services.id')
             ->select('bookings.*', 'saloon_services.name')
             ->where('bookings.user_id', auth()->user()->id)
+            ->where('bookings.status', '=', 0)
             ->get();
         //dd($bookings);
         return view('customer.booking', compact('bookings'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function all_bookings()
+    {
+        //$bookings = Booking::with(['users', 'saloon_services'])->where('user_id', auth()->user()->id)->get();
+        $bookings = DB::table('bookings')
+            ->leftJoin('saloon_services', 'bookings.saloon_service_id', '=', 'saloon_services.id')
+            ->select('bookings.*', 'saloon_services.name')
+            ->where('bookings.user_id', auth()->user()->id)
+            ->where('bookings.status', '!=', 0)
+            ->get();
+        //dd($bookings);
+        return view('customer.booking_all', compact('bookings'));
     }
 
     /**

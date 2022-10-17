@@ -198,7 +198,10 @@
                                         @enderror
                                     </div>
                                     <div class="row m-t-30">
-                                        <div class="col-md-12">
+                                        <div class="col-sm-6">
+                                            <a href="#"class="waves-effect waves-light text-center m-b-20" id="getLocation" style="float: right:">Get Current Location</a>
+                                        </div>
+                                        <div class="col-sm-6">
                                             <button type="submit" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20" style="float: right;">Submit</button>
                                         </div>
                                     </div>
@@ -235,6 +238,30 @@
                 });
             }
         }
+
+        
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        $(document).on('click', '#getLocation', function(e) {
+                e.preventDefault();
+       
+            if ("geolocation" in navigator){
+                navigator.geolocation.getCurrentPosition(function(position){ 
+                    var currentLatitude = position.coords.latitude;
+                    var currentLongitude = position.coords.longitude;
+                    //alert("Current Latitude: " + currentLatitude);
+
+                    $('#latitude').val(currentLatitude);
+                    $('#longitude').val(currentLongitude);
+                });
+            }
+        
+
+        });
 
         
     });
