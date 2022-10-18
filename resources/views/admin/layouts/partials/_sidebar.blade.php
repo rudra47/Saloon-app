@@ -36,6 +36,13 @@
                     <span class="pcoded-mtext">Bookings</span>
                 </a>
             </li>
+            </li>
+            <li class="{{ Request::is('saloon/settings') ? 'active pcoded-trigger' : '' }} ">
+                <a href="{{ route('app.saloon.settings') }}">
+                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                    <span class="pcoded-mtext">Settings</span>
+                </a>
+            </li>
             @endif
         </ul>
     </div>

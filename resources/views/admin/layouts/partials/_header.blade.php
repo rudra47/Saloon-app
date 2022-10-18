@@ -7,7 +7,7 @@
             </a>
             <a href="../index-2.html">
 {{--                <img class="img-fluid" src="{{ asset('/') }}adminity/files/assets/images/logo.png" alt="Theme-Logo" />--}}
-                <h4>{{ evn('APP_NAME') }}</h4>
+                <h4>{{ env('APP_NAME') }}</h4>
             </a>
             <a class="mobile-options">
                 <i class="feather icon-more-horizontal"></i>
@@ -28,7 +28,7 @@
                         <div class="dropdown-toggle" data-toggle="dropdown">
 {{--                            <img src="{{ asset('/') }}adminity/files/assets/images/avatar-4.jpg" class="img-radius"--}}
 {{--                                 alt="User-Profile-Image">--}}
-                            <span>John Doe</span>
+                            <span>{{auth()->user()->name}}</span>
                             <i class="feather icon-chevron-down"></i>
                         </div>
                         <ul class="show-notification profile-notification dropdown-menu"

@@ -10,6 +10,7 @@ use App\Http\Controllers\Customer\SaloonController;
 use App\Http\Controllers\Customer\PagesController;
 use App\Http\Controllers\Saloon\ServiceController;
 use App\Http\Controllers\Saloon\BookingController;
+use App\Http\Controllers\Saloon\SettingsController;
 //APP
 Use App\Http\Controllers\AppAuthController;
 use Illuminate\Support\Facades\Route;
@@ -64,6 +65,8 @@ Route::prefix('app')->as('app.')->group(function () {
                 Route::get('/confirmation/{booking_id}', [BookingController::class, 'confirmation'])->name('confirmation');
                 Route::post('/confirmationStore/{booking_id}', [BookingController::class, 'confirmationStore'])->name('confirmationStore');
             });
+            Route::get('/settings', [SettingsController::class, 'settings'])->name('settings');
+            Route::post('/settingsStore/{saloon_id}', [SettingsController::class, 'settingsStore'])->name('settingsStore');
         });
     });
 });
