@@ -8,6 +8,7 @@
         </div>
         @include('admin.includes.validation_error')
     </div>
+    
 
     <div class="row">
         <div class="col-12">
